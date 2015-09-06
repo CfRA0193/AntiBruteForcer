@@ -1,0 +1,24 @@
+ScryptEncoder.cs
+line 459:
+
+private unsafe static byte[] CryptoScrypt(byte[] password, byte[] salt, long N, int r, int p)
+
+{
+
+...
+
+}
+
+
+
+replace with
+
+
+
+public unsafe static byte[] CryptoScrypt(byte[] password, byte[] salt, long N, int r, int p)
+
+{
+...
+}
+
+and build this library!
