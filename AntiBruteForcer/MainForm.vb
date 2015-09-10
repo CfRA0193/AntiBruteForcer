@@ -70,6 +70,7 @@ Public Class MainForm
 
     Private Sub _deriveKeyButton_Click(sender As Object, e As EventArgs) Handles _deriveKeyButton.Click
         Try
+            _deriveKeyButton.Enabled = False : _encryptedSaltCopyButton.Enabled = False : _keyCopyButton.Enabled = False : Application.DoEvents()
             _saltGenerationCheckBox.Checked = False : _keyRichTextBox.Text = "Started to derive key..." + vbCrLf
             If Not _saltDecryptionCheckBox.Checked Then UpdateEncryptedSalt(e)
             _saltPasswordTextBox.Text = _saltPasswordTextBox.Text.Trim()
@@ -105,6 +106,8 @@ Public Class MainForm
             End With
         Catch
             MessageBox.Show("Can't derive key!")
+        Finally
+            _deriveKeyButton.Enabled = True : _encryptedSaltCopyButton.Enabled = True : _keyCopyButton.Enabled = True
         End Try
     End Sub
 

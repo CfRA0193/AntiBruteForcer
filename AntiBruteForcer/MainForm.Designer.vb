@@ -43,10 +43,10 @@ Partial Class MainForm
         '_masterPasswordTextBox
         '
         Me._masterPasswordTextBox.BackColor = System.Drawing.Color.LightSkyBlue
-        Me._masterPasswordTextBox.Location = New System.Drawing.Point(14, 335)
+        Me._masterPasswordTextBox.Location = New System.Drawing.Point(11, 335)
         Me._masterPasswordTextBox.Name = "_masterPasswordTextBox"
         Me._masterPasswordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(9632)
-        Me._masterPasswordTextBox.Size = New System.Drawing.Size(456, 20)
+        Me._masterPasswordTextBox.Size = New System.Drawing.Size(457, 20)
         Me._masterPasswordTextBox.TabIndex = 4
         '
         '_saltGenerationCheckBox
@@ -58,7 +58,7 @@ Partial Class MainForm
         Me._saltGenerationCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me._saltGenerationCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._saltGenerationCheckBox.ForeColor = System.Drawing.Color.Cornsilk
-        Me._saltGenerationCheckBox.Location = New System.Drawing.Point(14, 476)
+        Me._saltGenerationCheckBox.Location = New System.Drawing.Point(11, 478)
         Me._saltGenerationCheckBox.Name = "_saltGenerationCheckBox"
         Me._saltGenerationCheckBox.Size = New System.Drawing.Size(124, 17)
         Me._saltGenerationCheckBox.TabIndex = 6
@@ -82,9 +82,9 @@ Partial Class MainForm
         Me._encryptedSaltRichTextBox.BackColor = System.Drawing.Color.LightSkyBlue
         Me._encryptedSaltRichTextBox.Font = New System.Drawing.Font("Consolas", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._encryptedSaltRichTextBox.ForeColor = System.Drawing.Color.Black
-        Me._encryptedSaltRichTextBox.Location = New System.Drawing.Point(12, 12)
+        Me._encryptedSaltRichTextBox.Location = New System.Drawing.Point(11, 11)
         Me._encryptedSaltRichTextBox.Name = "_encryptedSaltRichTextBox"
-        Me._encryptedSaltRichTextBox.Size = New System.Drawing.Size(456, 127)
+        Me._encryptedSaltRichTextBox.Size = New System.Drawing.Size(457, 127)
         Me._encryptedSaltRichTextBox.TabIndex = 0
         Me._encryptedSaltRichTextBox.TabStop = False
         Me._encryptedSaltRichTextBox.Text = ""
@@ -93,10 +93,10 @@ Partial Class MainForm
         '
         Me._saltPasswordTextBox.BackColor = System.Drawing.Color.LightSkyBlue
         Me._saltPasswordTextBox.ForeColor = System.Drawing.Color.Black
-        Me._saltPasswordTextBox.Location = New System.Drawing.Point(12, 145)
+        Me._saltPasswordTextBox.Location = New System.Drawing.Point(11, 144)
         Me._saltPasswordTextBox.Name = "_saltPasswordTextBox"
         Me._saltPasswordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(9632)
-        Me._saltPasswordTextBox.Size = New System.Drawing.Size(456, 20)
+        Me._saltPasswordTextBox.Size = New System.Drawing.Size(457, 20)
         Me._saltPasswordTextBox.TabIndex = 1
         '
         '_keyRichTextBox
@@ -104,10 +104,10 @@ Partial Class MainForm
         Me._keyRichTextBox.BackColor = System.Drawing.Color.LightSkyBlue
         Me._keyRichTextBox.Font = New System.Drawing.Font("Consolas", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._keyRichTextBox.ForeColor = System.Drawing.Color.Black
-        Me._keyRichTextBox.Location = New System.Drawing.Point(14, 217)
+        Me._keyRichTextBox.Location = New System.Drawing.Point(11, 217)
         Me._keyRichTextBox.Name = "_keyRichTextBox"
         Me._keyRichTextBox.ReadOnly = True
-        Me._keyRichTextBox.Size = New System.Drawing.Size(456, 112)
+        Me._keyRichTextBox.Size = New System.Drawing.Size(457, 112)
         Me._keyRichTextBox.TabIndex = 3
         Me._keyRichTextBox.TabStop = False
         Me._keyRichTextBox.Text = ""
@@ -118,7 +118,7 @@ Partial Class MainForm
         Me._saltPasswordTextBoxLabel.BackColor = System.Drawing.Color.Transparent
         Me._saltPasswordTextBoxLabel.Font = New System.Drawing.Font("Segoe Print", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._saltPasswordTextBoxLabel.ForeColor = System.Drawing.Color.Cornsilk
-        Me._saltPasswordTextBoxLabel.Location = New System.Drawing.Point(10, 168)
+        Me._saltPasswordTextBoxLabel.Location = New System.Drawing.Point(8, 167)
         Me._saltPasswordTextBoxLabel.Name = "_saltPasswordTextBoxLabel"
         Me._saltPasswordTextBoxLabel.Size = New System.Drawing.Size(127, 23)
         Me._saltPasswordTextBoxLabel.TabIndex = 0
@@ -130,7 +130,7 @@ Partial Class MainForm
         Me._masterPasswordTextBoxLabel.BackColor = System.Drawing.Color.Transparent
         Me._masterPasswordTextBoxLabel.Font = New System.Drawing.Font("Segoe Print", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._masterPasswordTextBoxLabel.ForeColor = System.Drawing.Color.Cornsilk
-        Me._masterPasswordTextBoxLabel.Location = New System.Drawing.Point(10, 358)
+        Me._masterPasswordTextBoxLabel.Location = New System.Drawing.Point(8, 358)
         Me._masterPasswordTextBoxLabel.Name = "_masterPasswordTextBoxLabel"
         Me._masterPasswordTextBoxLabel.Size = New System.Drawing.Size(149, 23)
         Me._masterPasswordTextBoxLabel.TabIndex = 0
@@ -167,7 +167,7 @@ Partial Class MainForm
         Me._saltDecryptionCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me._saltDecryptionCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._saltDecryptionCheckBox.ForeColor = System.Drawing.Color.Cornsilk
-        Me._saltDecryptionCheckBox.Location = New System.Drawing.Point(375, 174)
+        Me._saltDecryptionCheckBox.Location = New System.Drawing.Point(375, 173)
         Me._saltDecryptionCheckBox.Name = "_saltDecryptionCheckBox"
         Me._saltDecryptionCheckBox.Size = New System.Drawing.Size(93, 17)
         Me._saltDecryptionCheckBox.TabIndex = 2
@@ -181,7 +181,7 @@ Partial Class MainForm
         Me._128bitKeyCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me._128bitKeyCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._128bitKeyCheckBox.ForeColor = System.Drawing.Color.Cornsilk
-        Me._128bitKeyCheckBox.Location = New System.Drawing.Point(14, 430)
+        Me._128bitKeyCheckBox.Location = New System.Drawing.Point(11, 432)
         Me._128bitKeyCheckBox.Name = "_128bitKeyCheckBox"
         Me._128bitKeyCheckBox.Size = New System.Drawing.Size(85, 17)
         Me._128bitKeyCheckBox.TabIndex = 5
@@ -195,7 +195,7 @@ Partial Class MainForm
         Me._256bitKeyCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me._256bitKeyCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._256bitKeyCheckBox.ForeColor = System.Drawing.Color.Cornsilk
-        Me._256bitKeyCheckBox.Location = New System.Drawing.Point(14, 453)
+        Me._256bitKeyCheckBox.Location = New System.Drawing.Point(11, 455)
         Me._256bitKeyCheckBox.Name = "_256bitKeyCheckBox"
         Me._256bitKeyCheckBox.Size = New System.Drawing.Size(85, 17)
         Me._256bitKeyCheckBox.TabIndex = 10
@@ -219,7 +219,7 @@ Partial Class MainForm
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Black
         Me.BackgroundImage = Global.AntiBruteForcer.My.Resources.Resources.Background
-        Me.ClientSize = New System.Drawing.Size(479, 506)
+        Me.ClientSize = New System.Drawing.Size(479, 504)
         Me.Controls.Add(Me._IntelInsidePictureBox)
         Me.Controls.Add(Me._256bitKeyCheckBox)
         Me.Controls.Add(Me._128bitKeyCheckBox)
