@@ -37,6 +37,7 @@ Partial Class MainForm
         Me._128bitKeyCheckBox = New System.Windows.Forms.CheckBox()
         Me._256bitKeyCheckBox = New System.Windows.Forms.CheckBox()
         Me._IntelInsidePictureBox = New System.Windows.Forms.PictureBox()
+        Me._helpButton = New System.Windows.Forms.Button()
         CType(Me._IntelInsidePictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -73,7 +74,7 @@ Partial Class MainForm
         Me._deriveKeyButton.Location = New System.Drawing.Point(305, 388)
         Me._deriveKeyButton.Name = "_deriveKeyButton"
         Me._deriveKeyButton.Size = New System.Drawing.Size(163, 40)
-        Me._deriveKeyButton.TabIndex = 7
+        Me._deriveKeyButton.TabIndex = 8
         Me._deriveKeyButton.Text = "START TO DERIVE KEY"
         Me._deriveKeyButton.UseVisualStyleBackColor = False
         '
@@ -144,7 +145,7 @@ Partial Class MainForm
         Me._keyCopyButton.Location = New System.Drawing.Point(305, 466)
         Me._keyCopyButton.Name = "_keyCopyButton"
         Me._keyCopyButton.Size = New System.Drawing.Size(163, 26)
-        Me._keyCopyButton.TabIndex = 9
+        Me._keyCopyButton.TabIndex = 10
         Me._keyCopyButton.Text = "KEY COPY / CLEAR"
         Me._keyCopyButton.UseVisualStyleBackColor = False
         '
@@ -156,7 +157,7 @@ Partial Class MainForm
         Me._encryptedSaltCopyButton.Location = New System.Drawing.Point(305, 434)
         Me._encryptedSaltCopyButton.Name = "_encryptedSaltCopyButton"
         Me._encryptedSaltCopyButton.Size = New System.Drawing.Size(163, 26)
-        Me._encryptedSaltCopyButton.TabIndex = 8
+        Me._encryptedSaltCopyButton.TabIndex = 9
         Me._encryptedSaltCopyButton.Text = "SALT COPY / CLEAR"
         Me._encryptedSaltCopyButton.UseVisualStyleBackColor = False
         '
@@ -213,6 +214,18 @@ Partial Class MainForm
         Me._IntelInsidePictureBox.TabIndex = 11
         Me._IntelInsidePictureBox.TabStop = False
         '
+        '_helpButton
+        '
+        Me._helpButton.BackColor = System.Drawing.Color.Black
+        Me._helpButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me._helpButton.ForeColor = System.Drawing.Color.Cornsilk
+        Me._helpButton.Location = New System.Drawing.Point(141, 466)
+        Me._helpButton.Name = "_helpButton"
+        Me._helpButton.Size = New System.Drawing.Size(66, 26)
+        Me._helpButton.TabIndex = 7
+        Me._helpButton.Text = "HELP!"
+        Me._helpButton.UseVisualStyleBackColor = False
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -220,6 +233,7 @@ Partial Class MainForm
         Me.BackColor = System.Drawing.Color.Black
         Me.BackgroundImage = Global.AntiBruteForcer.My.Resources.Resources.Background
         Me.ClientSize = New System.Drawing.Size(479, 504)
+        Me.Controls.Add(Me._helpButton)
         Me.Controls.Add(Me._IntelInsidePictureBox)
         Me.Controls.Add(Me._256bitKeyCheckBox)
         Me.Controls.Add(Me._128bitKeyCheckBox)
@@ -261,4 +275,5 @@ Partial Class MainForm
     Friend WithEvents _128bitKeyCheckBox As CheckBox
     Friend WithEvents _256bitKeyCheckBox As CheckBox
     Friend WithEvents _IntelInsidePictureBox As PictureBox
+    Friend WithEvents _helpButton As Button
 End Class

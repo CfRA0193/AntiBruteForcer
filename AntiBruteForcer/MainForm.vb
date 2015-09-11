@@ -70,7 +70,7 @@ Public Class MainForm
 
     Private Sub _deriveKeyButton_Click(sender As Object, e As EventArgs) Handles _deriveKeyButton.Click
         Try
-            _deriveKeyButton.Enabled = False : _encryptedSaltCopyButton.Enabled = False : _keyCopyButton.Enabled = False : Application.DoEvents()
+            _helpButton.Enabled = False : _deriveKeyButton.Enabled = False : _encryptedSaltCopyButton.Enabled = False : _keyCopyButton.Enabled = False : Application.DoEvents()
             _saltGenerationCheckBox.Checked = False : _keyRichTextBox.Text = "Started to derive key..." + vbCrLf
             If Not _saltDecryptionCheckBox.Checked Then UpdateEncryptedSalt(e)
             _saltPasswordTextBox.Text = _saltPasswordTextBox.Text.Trim()
@@ -107,7 +107,7 @@ Public Class MainForm
         Catch
             MessageBox.Show("Can't derive key!")
         Finally
-            _deriveKeyButton.Enabled = True : _encryptedSaltCopyButton.Enabled = True : _keyCopyButton.Enabled = True
+            _helpButton.Enabled = True : _deriveKeyButton.Enabled = True : _encryptedSaltCopyButton.Enabled = True : _keyCopyButton.Enabled = True
         End Try
     End Sub
 
@@ -237,11 +237,11 @@ Public Class MainForm
         UpdateEncryptedSalt(sender, e)
     End Sub
 
-    Private Sub _IntelInsidePictureBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _IntelInsidePictureBox.MouseMove
+    Private Sub _helpButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _helpButton.MouseMove
         UpdateEncryptedSalt(sender, e)
     End Sub
 
-    Private Sub _DRNGLabel_MouseMove(sender As Object, e As MouseEventArgs)
+    Private Sub _IntelInsidePictureBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _IntelInsidePictureBox.MouseMove
         UpdateEncryptedSalt(sender, e)
     End Sub
 
@@ -259,5 +259,48 @@ Public Class MainForm
 
     Private Sub _saltGenerationCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _saltGenerationCheckBox.CheckedChanged
         If _saltGenerationCheckBox.Checked Then _keyRichTextBox.Text = String.Empty
+
+        With _saltPasswordTextBox
+            .ClearUndo()
+            .Clear()
+            .PasswordChar = "■"
+        End With
+
+        With _masterPasswordTextBox
+            .ClearUndo()
+            .Clear()
+            .PasswordChar = "■"
+        End With
+    End Sub
+
+    Private Sub _helpButton_Click(sender As Object, e As EventArgs) Handles _helpButton.Click
+        _saltGenerationCheckBox.Checked = False : Application.DoEvents()
+
+        With _encryptedSaltRichTextBox
+            .ClearUndo()
+            .ClearUndo()
+            .Text = "This is a text box to store encrypted 'salt' message, which must be saved in comments of archive or placed with it in separate txt file..."
+        End With
+
+        With _saltPasswordTextBox
+            .ClearUndo()
+            .Clear()
+            .Text = "This is a password to protect 'salt', placed above..."
+            .PasswordChar = ""
+        End With
+
+        With _keyRichTextBox
+            .ClearUndo()
+            .Clear()
+            .Text = "This is a text box to store derived key, which will be used to encrypt archive..."
+        End With
+
+        With _masterPasswordTextBox
+            .ClearUndo()
+            .Clear()
+            .Text = "This is a master password, and it is the only one, which must be saved in your memory :) "
+            .PasswordChar = ""
+        End With
+
     End Sub
 End Class
