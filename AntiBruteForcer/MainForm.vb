@@ -70,14 +70,18 @@ Public Class MainForm
 
     Private Sub _deriveKeyButton_Click(sender As Object, e As EventArgs) Handles _deriveKeyButton.Click
         Try
-            _helpButton.Enabled = False : _deriveKeyButton.Enabled = False : _encryptedSaltCopyButton.Enabled = False : _keyCopyButton.Enabled = False : Application.DoEvents()
-            _saltGenerationCheckBox.Checked = False : _keyRichTextBox.Text = "Started to derive key..." + vbCrLf
+            _128bitKeyCheckBox.Visible = False : _256bitKeyCheckBox.Visible = False : _saltDecryptionCheckBox.Visible = False
+            _helpButton.Visible = False : _deriveKeyButton.Visible = False : _encryptedSaltCopyButton.Visible = False
+            _keyCopyButton.Visible = False : Application.DoEvents()
+            '------------------------------------------------------
+            _saltGenerationCheckBox.Checked = False : _saltGenerationCheckBox.Visible = False : _keyRichTextBox.Text = "Started to derive key..." + vbCrLf
             If Not _saltDecryptionCheckBox.Checked Then UpdateEncryptedSalt(e)
             _saltPasswordTextBox.Text = _saltPasswordTextBox.Text.Trim()
             _masterPasswordTextBox.Text = _masterPasswordTextBox.Text.Trim()
             Application.DoEvents()
             Dim password = Encoding.UTF8.GetBytes(_masterPasswordTextBox.Text)
-            Dim salt = New List(Of Byte)(RijndaelEncryptor.Decode(Base64Sync.Decode(Encoding.UTF8.GetBytes(_encryptedSaltRichTextBox.Text), _saltTitle, _messageWidth), Encoding.UTF8.GetBytes(_saltPasswordTextBox.Text)))
+            Dim salt = New List(Of Byte)(RijndaelEncryptor.Decode(Base64Sync.Decode(Encoding.UTF8.GetBytes(_encryptedSaltRichTextBox.Text), _saltTitle, _messageWidth),
+                                                                  Encoding.UTF8.GetBytes(_saltPasswordTextBox.Text)))
             Dim resultKey = New List(Of Byte)
             For i = 0 To _deriveBlocksCount - 1
                 Dim saltBlock = New Byte(_saltBlockSize - 1) {} : salt.CopyTo((_saltBlockSize * i), saltBlock, 0, _saltBlockSize)
@@ -107,7 +111,9 @@ Public Class MainForm
         Catch
             MessageBox.Show("Can't derive key!")
         Finally
-            _helpButton.Enabled = True : _deriveKeyButton.Enabled = True : _encryptedSaltCopyButton.Enabled = True : _keyCopyButton.Enabled = True
+            _128bitKeyCheckBox.Visible = True : _256bitKeyCheckBox.Visible = True : _saltGenerationCheckBox.Visible = True
+            _saltDecryptionCheckBox.Visible = True : _helpButton.Visible = True : _deriveKeyButton.Visible = True
+            _encryptedSaltCopyButton.Visible = True : _keyCopyButton.Visible = True
         End Try
     End Sub
 
@@ -258,19 +264,21 @@ Public Class MainForm
     End Sub
 
     Private Sub _saltGenerationCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _saltGenerationCheckBox.CheckedChanged
-        If _saltGenerationCheckBox.Checked Then _keyRichTextBox.Text = String.Empty
+        If _saltGenerationCheckBox.Checked Then
+            _keyRichTextBox.Text = String.Empty
 
-        With _saltPasswordTextBox
-            .ClearUndo()
-            .Clear()
-            .PasswordChar = "■"
-        End With
+            With _saltPasswordTextBox
+                .ClearUndo()
+                .Clear()
+                .PasswordChar = "■"
+            End With
 
-        With _masterPasswordTextBox
-            .ClearUndo()
-            .Clear()
-            .PasswordChar = "■"
-        End With
+            With _masterPasswordTextBox
+                .ClearUndo()
+                .Clear()
+                .PasswordChar = "■"
+            End With
+        End If
     End Sub
 
     Private Sub _helpButton_Click(sender As Object, e As EventArgs) Handles _helpButton.Click

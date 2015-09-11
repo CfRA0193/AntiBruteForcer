@@ -1,0 +1,19 @@
+SALT PASSWORD:   123
+MASTER PASSWORD: 456
+
+--------- BEGIN AntiBruteForcer ENCRYPTED SALT MESSAGE ---------
++M4eouUZ5nzPb6lh/oSeTkJN4iqWb8Diu1ugusruTeen67dyuTl8UqAc2B0aeQFR
+16uxAcaCCnnXojcriLOEZRRikycZumkTr0T45k9hMHX+5rcvN6Jqtofh31IGm3CE
+rFM3iZSzrQR2gepZjzXvslzcNcxPJO50ck9VHnAb52Oor7bWpFIgZOI/mlxvgc7N
+rFnDx6wQ3pbL6jyQ/3UFBzm24a0j5wEaukU4yUbemaToaEnIUkwthnWXDSUT9vB3
+NFgFWgIO/lr8AcITqmusCZaWVTq9HdOcucXC0ehPQu01kqj/Ami+8/0LFeYfkPeg
+EyjdmALB39W6yYW4WqVA/sQ=
+----------- END AntiBruteForcer ENCRYPTED SALT MESSAGE ---------
+
+--------------- BEGIN AntiBruteForcer KEY MESSAGE --------------
+UWHURWditwmVdt94Jtii4ssmt4OqfYZnX1jN9Y9IWoedDPS1uDkhiz9ZnGNxVzwO
+sk5Wl9lJTLncr3hkbZ1c6L3U2ZnmcIXPoCuTisPM17rUWzDLhGdfY+v9MznsF7gC
+dhGX8Tv/X/mI/v4QzQKpH5KvIh63LjUHCMEmU7T5gJH9+Tw1q01I2ufC9PyINOM/
+Ee3rWJYLzPZp6L3P0zSFstu3Mon4hEz4LHwJCAxxwn5NImA4NcS/t5z/hqU8Ac65
+P9WfLIhogXk=
+----------------- END AntiBruteForcer KEY MESSAGE --------------

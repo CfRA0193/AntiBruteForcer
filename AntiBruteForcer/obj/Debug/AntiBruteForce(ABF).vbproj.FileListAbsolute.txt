@@ -1,2 +1,0 @@
-C:\Cleverflow.prj\me.storage\AntiBruteForce(ABF)\AntiBruteForce(ABF)\AntiBruteForce(ABF)\bin\Debug\AntiBruteForce(ABF).exe.config
-C:\Cleverflow.prj\me.storage\AntiBruteForce(ABF)\AntiBruteForce(ABF)\bin\Debug\AntiBruteForce(ABF).exe.config
