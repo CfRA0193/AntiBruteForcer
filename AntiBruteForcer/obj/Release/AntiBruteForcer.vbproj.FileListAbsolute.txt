@@ -1,0 +1,10 @@
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\bin\Release\AntiBruteForcer.exe.config
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\bin\Release\AntiBruteForcer.exe
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\bin\Release\AntiBruteForcer.pdb
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\bin\Release\AntiBruteForcer.xml
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Release\AntiBruteForcer.MainForm.resources
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Release\AntiBruteForcer.Resources.resources
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Release\AntiBruteForcer.vbproj.GenerateResource.Cache
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Release\AntiBruteForcer.exe
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Release\AntiBruteForcer.xml
+D:\Cleverflow.prj\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Release\AntiBruteForcer.pdb

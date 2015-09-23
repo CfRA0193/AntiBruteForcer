@@ -110,6 +110,7 @@ Public Class MainForm
             End With
         Catch
             MessageBox.Show("Can't derive key!")
+            _keyRichTextBox.ClearUndo() : _keyRichTextBox.Clear()
         Finally
             _128bitKeyCheckBox.Visible = True : _256bitKeyCheckBox.Visible = True : _saltGenerationCheckBox.Visible = True
             _saltDecryptionCheckBox.Visible = True : _helpButton.Visible = True : _deriveKeyButton.Visible = True
@@ -126,7 +127,7 @@ Public Class MainForm
             Clipboard.SetText(saltSb.ToString())
             _encryptedSaltRichTextBox.ClearUndo() : _encryptedSaltRichTextBox.Clear()
         Catch ex As Exception
-            MessageBox.Show("Can't copy encrypted salt to clipboard!")
+            MessageBox.Show("Can't copy encrypted 'salt' to clipboard!")
         End Try
     End Sub
 
@@ -139,7 +140,7 @@ Public Class MainForm
             Clipboard.SetText(keySb.ToString())
             _keyRichTextBox.ClearUndo() : _keyRichTextBox.Clear()
         Catch ex As Exception
-            MessageBox.Show("Can't copy key to clipboard!")
+            MessageBox.Show("Can't copy derived key to clipboard!")
         End Try
     End Sub
 
@@ -266,13 +267,13 @@ Public Class MainForm
     Private Sub _saltGenerationCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _saltGenerationCheckBox.CheckedChanged
         If _saltGenerationCheckBox.Checked Then
             _keyRichTextBox.Text = String.Empty
-
+            '--------------------------
             With _saltPasswordTextBox
                 .ClearUndo()
                 .Clear()
                 .PasswordChar = "■"
             End With
-
+            '--------------------------
             With _masterPasswordTextBox
                 .ClearUndo()
                 .Clear()
@@ -283,32 +284,31 @@ Public Class MainForm
 
     Private Sub _helpButton_Click(sender As Object, e As EventArgs) Handles _helpButton.Click
         _saltGenerationCheckBox.Checked = False : Application.DoEvents()
-
+        '--------------------------
         With _encryptedSaltRichTextBox
             .ClearUndo()
             .ClearUndo()
-            .Text = "This is a text box to store encrypted 'salt' message, which must be saved in comments of archive or placed with it in separate txt file..."
+            .Text = "This is a text box to store encrypted 'salt' message, which must be saved in comments of archive or in txt-file... Don't encrypt filenames in archive, because without access to archive's comment you will not be able to decrypt it! Always check derived key (try to decrypt archive)!"
         End With
-
+        '--------------------------
         With _saltPasswordTextBox
             .ClearUndo()
             .Clear()
             .Text = "This is a password to protect 'salt', placed above..."
             .PasswordChar = ""
         End With
-
+        '--------------------------
         With _keyRichTextBox
             .ClearUndo()
             .Clear()
-            .Text = "This is a text box to store derived key, which will be used to encrypt archive..."
+            .Text = "This is a text box to store derived key, which will be used by you to encrypt archive..."
         End With
-
+        '--------------------------
         With _masterPasswordTextBox
             .ClearUndo()
             .Clear()
-            .Text = "This is a master password, and it is the only one, which must be saved in your memory :) "
+            .Text = "This is a master password, and it is the only one, which must be saved in your memory :)"
             .PasswordChar = ""
         End With
-
     End Sub
 End Class
