@@ -11,6 +11,7 @@ Public Class MainForm
     Private _keyTitle As String = "AntiBruteForcer KEY"
     Private _saltBlockSize As Integer = 20
     Private _nIters As Integer = 262144
+    Private _nItersFast As Integer = _nIters / 8
     Private _deriveBlocksCount As Integer = 10
     Private _messageWidth = 16
     Private _rdRand As Boolean = False
@@ -70,7 +71,7 @@ Public Class MainForm
 
     Private Sub _deriveKeyButton_Click(sender As Object, e As EventArgs) Handles _deriveKeyButton.Click
         Try
-            _128bitKeyCheckBox.Visible = False : _256bitKeyCheckBox.Visible = False : _saltDecryptionCheckBox.Visible = False
+            _128bitKeyCheckBox.Visible = False : _256bitKeyCheckBox.Visible = False : _saltDecryptionCheckBox.Visible = False : _fastCheckBox.Visible = False
             _helpButton.Visible = False : _deriveKeyButton.Visible = False : _encryptedSaltCopyButton.Visible = False
             _keyCopyButton.Visible = False : Application.DoEvents()
             '------------------------------------------------------
@@ -85,8 +86,8 @@ Public Class MainForm
             Dim resultKey = New List(Of Byte)
             For i = 0 To _deriveBlocksCount - 1
                 Dim saltBlock = New Byte(_saltBlockSize - 1) {} : salt.CopyTo((_saltBlockSize * i), saltBlock, 0, _saltBlockSize)
-                Dim keyBlockS = ScryptEncoder.CryptoScrypt(password, saltBlock, _nIters, 16, 1) '256 bit, 512 Mb RAM!
-                Dim keyBlockR = New Rfc2898DeriveBytes(password, saltBlock, _nIters).GetBytes(_saltBlockSize) '160 bit
+                Dim keyBlockS = ScryptEncoder.CryptoScrypt(password, saltBlock, If(_fastCheckBox.Checked, _nItersFast, _nIters), 16, 1) '256 bit, 512 Mb RAM!
+                Dim keyBlockR = New Rfc2898DeriveBytes(password, saltBlock, If(_fastCheckBox.Checked, _nItersFast, _nIters)).GetBytes(_saltBlockSize) '160 bit
                 Dim hmacA = New HMACSHA1(keyBlockS) : Dim keyBlockA = hmacA.ComputeHash(keyBlockR)
                 Dim hmacB = New HMACSHA256(keyBlockR) : Dim keyBlockB = hmacB.ComputeHash(keyBlockS)
                 resultKey.AddRange(keyBlockA)
@@ -112,7 +113,7 @@ Public Class MainForm
             MessageBox.Show("Can't derive key!")
             _keyRichTextBox.ClearUndo() : _keyRichTextBox.Clear()
         Finally
-            _128bitKeyCheckBox.Visible = True : _256bitKeyCheckBox.Visible = True : _saltGenerationCheckBox.Visible = True
+            _128bitKeyCheckBox.Visible = True : _256bitKeyCheckBox.Visible = True : _saltGenerationCheckBox.Visible = True : _fastCheckBox.Visible = True
             _saltDecryptionCheckBox.Visible = True : _helpButton.Visible = True : _deriveKeyButton.Visible = True
             _encryptedSaltCopyButton.Visible = True : _keyCopyButton.Visible = True
         End Try

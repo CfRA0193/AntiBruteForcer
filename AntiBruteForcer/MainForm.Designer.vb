@@ -38,6 +38,7 @@ Partial Class MainForm
         Me._256bitKeyCheckBox = New System.Windows.Forms.CheckBox()
         Me._IntelInsidePictureBox = New System.Windows.Forms.PictureBox()
         Me._helpButton = New System.Windows.Forms.Button()
+        Me._fastCheckBox = New System.Windows.Forms.CheckBox()
         CType(Me._IntelInsidePictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -62,7 +63,7 @@ Partial Class MainForm
         Me._saltGenerationCheckBox.Location = New System.Drawing.Point(11, 478)
         Me._saltGenerationCheckBox.Name = "_saltGenerationCheckBox"
         Me._saltGenerationCheckBox.Size = New System.Drawing.Size(124, 17)
-        Me._saltGenerationCheckBox.TabIndex = 6
+        Me._saltGenerationCheckBox.TabIndex = 7
         Me._saltGenerationCheckBox.Text = "SALT GENERATION"
         Me._saltGenerationCheckBox.UseVisualStyleBackColor = False
         '
@@ -74,7 +75,7 @@ Partial Class MainForm
         Me._deriveKeyButton.Location = New System.Drawing.Point(305, 388)
         Me._deriveKeyButton.Name = "_deriveKeyButton"
         Me._deriveKeyButton.Size = New System.Drawing.Size(163, 40)
-        Me._deriveKeyButton.TabIndex = 8
+        Me._deriveKeyButton.TabIndex = 10
         Me._deriveKeyButton.Text = "START TO DERIVE KEY"
         Me._deriveKeyButton.UseVisualStyleBackColor = False
         '
@@ -145,7 +146,7 @@ Partial Class MainForm
         Me._keyCopyButton.Location = New System.Drawing.Point(305, 466)
         Me._keyCopyButton.Name = "_keyCopyButton"
         Me._keyCopyButton.Size = New System.Drawing.Size(163, 26)
-        Me._keyCopyButton.TabIndex = 10
+        Me._keyCopyButton.TabIndex = 12
         Me._keyCopyButton.Text = "KEY COPY / CLEAR"
         Me._keyCopyButton.UseVisualStyleBackColor = False
         '
@@ -157,7 +158,7 @@ Partial Class MainForm
         Me._encryptedSaltCopyButton.Location = New System.Drawing.Point(305, 434)
         Me._encryptedSaltCopyButton.Name = "_encryptedSaltCopyButton"
         Me._encryptedSaltCopyButton.Size = New System.Drawing.Size(163, 26)
-        Me._encryptedSaltCopyButton.TabIndex = 9
+        Me._encryptedSaltCopyButton.TabIndex = 11
         Me._encryptedSaltCopyButton.Text = "SALT COPY / CLEAR"
         Me._encryptedSaltCopyButton.UseVisualStyleBackColor = False
         '
@@ -199,7 +200,7 @@ Partial Class MainForm
         Me._256bitKeyCheckBox.Location = New System.Drawing.Point(11, 455)
         Me._256bitKeyCheckBox.Name = "_256bitKeyCheckBox"
         Me._256bitKeyCheckBox.Size = New System.Drawing.Size(85, 17)
-        Me._256bitKeyCheckBox.TabIndex = 10
+        Me._256bitKeyCheckBox.TabIndex = 6
         Me._256bitKeyCheckBox.Text = "256 BIT KEY"
         Me._256bitKeyCheckBox.UseVisualStyleBackColor = False
         '
@@ -222,9 +223,25 @@ Partial Class MainForm
         Me._helpButton.Location = New System.Drawing.Point(141, 466)
         Me._helpButton.Name = "_helpButton"
         Me._helpButton.Size = New System.Drawing.Size(66, 26)
-        Me._helpButton.TabIndex = 7
+        Me._helpButton.TabIndex = 8
         Me._helpButton.Text = "HELP!"
         Me._helpButton.UseVisualStyleBackColor = False
+        '
+        '_fastCheckBox
+        '
+        Me._fastCheckBox.AutoSize = True
+        Me._fastCheckBox.BackColor = System.Drawing.Color.Black
+        Me._fastCheckBox.Checked = True
+        Me._fastCheckBox.CheckState = System.Windows.Forms.CheckState.Checked
+        Me._fastCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me._fastCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me._fastCheckBox.ForeColor = System.Drawing.Color.Cornsilk
+        Me._fastCheckBox.Location = New System.Drawing.Point(305, 365)
+        Me._fastCheckBox.Name = "_fastCheckBox"
+        Me._fastCheckBox.Size = New System.Drawing.Size(50, 17)
+        Me._fastCheckBox.TabIndex = 9
+        Me._fastCheckBox.Text = "FAST"
+        Me._fastCheckBox.UseVisualStyleBackColor = False
         '
         'MainForm
         '
@@ -233,6 +250,7 @@ Partial Class MainForm
         Me.BackColor = System.Drawing.Color.Black
         Me.BackgroundImage = Global.AntiBruteForcer.My.Resources.Resources.Background
         Me.ClientSize = New System.Drawing.Size(479, 504)
+        Me.Controls.Add(Me._fastCheckBox)
         Me.Controls.Add(Me._helpButton)
         Me.Controls.Add(Me._IntelInsidePictureBox)
         Me.Controls.Add(Me._256bitKeyCheckBox)
@@ -276,4 +294,5 @@ Partial Class MainForm
     Friend WithEvents _256bitKeyCheckBox As CheckBox
     Friend WithEvents _IntelInsidePictureBox As PictureBox
     Friend WithEvents _helpButton As Button
+    Friend WithEvents _fastCheckBox As CheckBox
 End Class

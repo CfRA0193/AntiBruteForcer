@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Password-based key derivation with salt. In addition, salt is encrypted.")>
 <Assembly: AssemblyCompany("Artem Drobanov (DrAF)")>
 <Assembly: AssemblyProduct("AntiBruteForcer")>
-<Assembly: AssemblyCopyright("Copyright © DrAF 2015")>
+<Assembly: AssemblyCopyright("Copyright © DrAF 2015-2016")>
 <Assembly: AssemblyTrademark("AntiBruteForcer")>
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.15266.23")>
-<Assembly: AssemblyFileVersion("1.0.15266.23")>
+<Assembly: AssemblyVersion("1.0.16045.25")>
+<Assembly: AssemblyFileVersion("1.0.16045.25")>

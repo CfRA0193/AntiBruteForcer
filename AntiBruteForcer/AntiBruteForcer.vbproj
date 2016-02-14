@@ -136,11 +136,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="pics\Background.jpg" />
+    <None Include="Pics\Background.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ABF.ico" />
-    <None Include="pics\IntelInside.png" />
+    <None Include="Pics\IntelInside.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
