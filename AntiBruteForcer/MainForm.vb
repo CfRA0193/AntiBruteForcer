@@ -15,6 +15,8 @@ Public Class MainForm
     Private _deriveBlocksCount As Integer = 10
     Private _messageWidth = 16
     Private _rdRand As Boolean = False
+    Private _rndPassLen = 8
+    Private _rndPassSizeUp = 4
 
     Private Function Hash1600(bytesToHash As Byte(), Optional paddingLength As Integer = 0) As Byte()
         Dim HR As New List(Of Byte)
@@ -24,22 +26,26 @@ Public Class MainForm
         Dim H4 As New SHA1Managed      '160 bit
         Dim H5 As New RIPEMD160Managed '160 bit
         Dim H6 As New MD5CryptoServiceProvider() '128 bit
-        '---------------------------------------
+
         HR.AddRange(H1.ComputeHash(bytesToHash))
         HR.AddRange(H2.ComputeHash(bytesToHash))
         HR.AddRange(H3.ComputeHash(bytesToHash))
         HR.AddRange(H4.ComputeHash(bytesToHash))
         HR.AddRange(H5.ComputeHash(bytesToHash))
         HR.AddRange(H6.ComputeHash(bytesToHash))
-        '---------------------------------------
+
         Dim padding = New Byte(paddingLength - 1) {}
         Dim rng As New RNGCryptoServiceProvider() : rng.GetBytes(padding)
         HR.AddRange(padding)
-        '---------------------------------------
+
         Return HR.ToArray()
     End Function
 
     Private Sub UpdateEncryptedSalt(e As MouseEventArgs)
+        _encryptedSaltRichTextBox.Text = GetEncryptedSalt(e, _saltPasswordTextBox.Text)
+    End Sub
+
+    Private Function GetEncryptedSalt(e As MouseEventArgs, saltPassword As String) As String
         _salt.AddRange(Encoding.UTF8.GetBytes(e.X.ToString()))
         _salt.AddRange(Encoding.UTF8.GetBytes(e.Y.ToString()))
         _salt.AddRange(Encoding.UTF8.GetBytes(Date.Now.Ticks.ToString()))
@@ -47,9 +53,9 @@ Public Class MainForm
         If _rdRand Then _salt.AddRange(RdRandom.GenerateBytes(256 / 8))
         Dim saltHash = Hash1600(_salt.ToArray(), 32)
         _salt.Clear() : _salt.AddRange(saltHash)
-        '----------------------------------------------------------------
+
         Dim salt1 = _salt.ToArray()
-        Dim saltEnc1 = RijndaelEncryptor.Encode(salt1, Encoding.UTF8.GetBytes(_saltPasswordTextBox.Text))
+        Dim saltEnc1 = RijndaelEncryptor.Encode(salt1, Encoding.UTF8.GetBytes(saltPassword))
         Dim saltBase64Enc = Base64Sync.Encode(saltEnc1, _saltTitle, _messageWidth)
         Dim saltEnc2 = Base64Sync.Decode(saltBase64Enc, _saltTitle, _messageWidth)
         For i = 0 To saltEnc1.Length - 1
@@ -58,23 +64,23 @@ Public Class MainForm
                 Exit For
             End If
         Next
-        Dim salt2 = RijndaelEncryptor.Decode(saltEnc2, Encoding.UTF8.GetBytes(_saltPasswordTextBox.Text))
-        _saltPasswordTextBox.BackColor = Color.LightSkyBlue
+        Dim salt2 = RijndaelEncryptor.Decode(saltEnc2, Encoding.UTF8.GetBytes(saltPassword))
         For i = 0 To salt1.Length - 1
             If salt1(i) <> salt2(i) Then
                 Throw New Exception("salt1 <> salt2")
                 Exit For
             End If
         Next
-        _encryptedSaltRichTextBox.Text = Encoding.UTF8.GetString(saltBase64Enc)
-    End Sub
+
+        Return Encoding.UTF8.GetString(saltBase64Enc)
+    End Function
 
     Private Sub _deriveKeyButton_Click(sender As Object, e As EventArgs) Handles _deriveKeyButton.Click
         Try
             _128bitKeyCheckBox.Visible = False : _256bitKeyCheckBox.Visible = False : _saltDecryptionCheckBox.Visible = False : _fastCheckBox.Visible = False
             _helpButton.Visible = False : _deriveKeyButton.Visible = False : _encryptedSaltCopyButton.Visible = False
             _keyCopyButton.Visible = False : Application.DoEvents()
-            '------------------------------------------------------
+
             _saltGenerationCheckBox.Checked = False : _saltGenerationCheckBox.Visible = False : _keyRichTextBox.Text = "Started to derive key..." + vbCrLf
             If Not _saltDecryptionCheckBox.Checked Then UpdateEncryptedSalt(e)
             _saltPasswordTextBox.Text = _saltPasswordTextBox.Text.Trim()
@@ -187,11 +193,9 @@ Public Class MainForm
         _saltPasswordTextBox.ClearUndo() : _saltPasswordTextBox.Clear()
         _keyRichTextBox.ClearUndo() : _keyRichTextBox.Clear()
         _masterPasswordTextBox.ClearUndo() : _masterPasswordTextBox.Clear()
-        '------------------------------------------------------------------
+
         Clipboard.Clear()
     End Sub
-
-    '------------------------------------------------------------------------------------------------------------------------
 
     Private Sub _128bitKeyCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _128bitKeyCheckBox.CheckedChanged
         If _128bitKeyCheckBox.Checked Then _256bitKeyCheckBox.Checked = False
@@ -268,13 +272,13 @@ Public Class MainForm
     Private Sub _saltGenerationCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _saltGenerationCheckBox.CheckedChanged
         If _saltGenerationCheckBox.Checked Then
             _keyRichTextBox.Text = String.Empty
-            '--------------------------
+
             With _saltPasswordTextBox
                 .ClearUndo()
                 .Clear()
                 .PasswordChar = "■"
             End With
-            '--------------------------
+
             With _masterPasswordTextBox
                 .ClearUndo()
                 .Clear()
@@ -285,31 +289,61 @@ Public Class MainForm
 
     Private Sub _helpButton_Click(sender As Object, e As EventArgs) Handles _helpButton.Click
         _saltGenerationCheckBox.Checked = False : Application.DoEvents()
-        '--------------------------
+
         With _encryptedSaltRichTextBox
             .ClearUndo()
             .ClearUndo()
             .Text = "This is a text box to store encrypted 'salt' message, which must be saved in comments of archive or in txt-file... Don't encrypt filenames in archive, because without access to archive's comment you will not be able to decrypt it! Always check derived key (try to decrypt archive)!"
         End With
-        '--------------------------
+
         With _saltPasswordTextBox
             .ClearUndo()
             .Clear()
             .Text = "This is a password to protect 'salt', placed above..."
-            .PasswordChar = ""
+            .PasswordChar = String.Empty
         End With
-        '--------------------------
+
         With _keyRichTextBox
             .ClearUndo()
             .Clear()
             .Text = "This is a text box to store derived key, which will be used by you to encrypt archive..."
         End With
-        '--------------------------
+
         With _masterPasswordTextBox
             .ClearUndo()
             .Clear()
             .Text = "This is a master password, and it is the only one, which must be saved in your memory :)"
-            .PasswordChar = ""
+            .PasswordChar = String.Empty
         End With
+    End Sub
+
+    Private Sub _saltPasswordRndButton_Click(sender As Object, e As EventArgs) Handles _saltPasswordRndButton.Click
+        Dim es = GetEncryptedSalt(e, Guid.NewGuid().ToString("B"))
+        Dim H4 As New SHA1Managed() '160 bit
+        With _saltPasswordTextBox
+            .PasswordChar = If(.PasswordChar = "■", String.Empty, "■")
+            .Text = Convert.ToBase64String(H4.ComputeHash(Encoding.UTF8.GetBytes(es))).Substring(0, _rndPassLen)
+        End With
+        If _saltPasswordTextBox.PasswordChar = "■" Then
+            _saltPasswordTextBox.Text = String.Empty
+            _saltPasswordTextBox.Font = New Font(FontFamily.GenericSansSerif, _saltPasswordTextBox.Font.Size - _rndPassSizeUp)
+        Else
+            _saltPasswordTextBox.Font = New Font(FontFamily.GenericMonospace, _saltPasswordTextBox.Font.Size + _rndPassSizeUp)
+        End If
+    End Sub
+
+    Private Sub _masterPasswordRndButton_Click(sender As Object, e As EventArgs) Handles _masterPasswordRndButton.Click
+        Dim es = GetEncryptedSalt(e, Guid.NewGuid().ToString("B"))
+        Dim H4 As New SHA1Managed() '160 bit
+        With _masterPasswordTextBox
+            .PasswordChar = If(.PasswordChar = "■", String.Empty, "■")
+            .Text = Convert.ToBase64String(H4.ComputeHash(Encoding.UTF8.GetBytes(es))).Substring(0, _rndPassLen)
+        End With
+        If _masterPasswordTextBox.PasswordChar = "■" Then
+            _masterPasswordTextBox.Text = String.Empty
+            _masterPasswordTextBox.Font = New Font(FontFamily.GenericSansSerif, _masterPasswordTextBox.Font.Size - _rndPassSizeUp)
+        Else
+            _masterPasswordTextBox.Font = New Font(FontFamily.GenericMonospace, _masterPasswordTextBox.Font.Size + _rndPassSizeUp)
+        End If
     End Sub
 End Class

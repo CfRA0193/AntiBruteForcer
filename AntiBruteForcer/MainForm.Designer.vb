@@ -39,6 +39,8 @@ Partial Class MainForm
         Me._IntelInsidePictureBox = New System.Windows.Forms.PictureBox()
         Me._helpButton = New System.Windows.Forms.Button()
         Me._fastCheckBox = New System.Windows.Forms.CheckBox()
+        Me._saltPasswordRndButton = New System.Windows.Forms.Button()
+        Me._masterPasswordRndButton = New System.Windows.Forms.Button()
         CType(Me._IntelInsidePictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -49,7 +51,7 @@ Partial Class MainForm
         Me._masterPasswordTextBox.Name = "_masterPasswordTextBox"
         Me._masterPasswordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(9632)
         Me._masterPasswordTextBox.Size = New System.Drawing.Size(457, 20)
-        Me._masterPasswordTextBox.TabIndex = 4
+        Me._masterPasswordTextBox.TabIndex = 5
         '
         '_saltGenerationCheckBox
         '
@@ -63,7 +65,7 @@ Partial Class MainForm
         Me._saltGenerationCheckBox.Location = New System.Drawing.Point(11, 478)
         Me._saltGenerationCheckBox.Name = "_saltGenerationCheckBox"
         Me._saltGenerationCheckBox.Size = New System.Drawing.Size(124, 17)
-        Me._saltGenerationCheckBox.TabIndex = 7
+        Me._saltGenerationCheckBox.TabIndex = 9
         Me._saltGenerationCheckBox.Text = "SALT GENERATION"
         Me._saltGenerationCheckBox.UseVisualStyleBackColor = False
         '
@@ -75,7 +77,7 @@ Partial Class MainForm
         Me._deriveKeyButton.Location = New System.Drawing.Point(305, 388)
         Me._deriveKeyButton.Name = "_deriveKeyButton"
         Me._deriveKeyButton.Size = New System.Drawing.Size(163, 40)
-        Me._deriveKeyButton.TabIndex = 10
+        Me._deriveKeyButton.TabIndex = 12
         Me._deriveKeyButton.Text = "START TO DERIVE KEY"
         Me._deriveKeyButton.UseVisualStyleBackColor = False
         '
@@ -110,7 +112,7 @@ Partial Class MainForm
         Me._keyRichTextBox.Name = "_keyRichTextBox"
         Me._keyRichTextBox.ReadOnly = True
         Me._keyRichTextBox.Size = New System.Drawing.Size(457, 112)
-        Me._keyRichTextBox.TabIndex = 3
+        Me._keyRichTextBox.TabIndex = 4
         Me._keyRichTextBox.TabStop = False
         Me._keyRichTextBox.Text = ""
         '
@@ -120,7 +122,7 @@ Partial Class MainForm
         Me._saltPasswordTextBoxLabel.BackColor = System.Drawing.Color.Transparent
         Me._saltPasswordTextBoxLabel.Font = New System.Drawing.Font("Segoe Print", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._saltPasswordTextBoxLabel.ForeColor = System.Drawing.Color.Cornsilk
-        Me._saltPasswordTextBoxLabel.Location = New System.Drawing.Point(8, 167)
+        Me._saltPasswordTextBoxLabel.Location = New System.Drawing.Point(38, 169)
         Me._saltPasswordTextBoxLabel.Name = "_saltPasswordTextBoxLabel"
         Me._saltPasswordTextBoxLabel.Size = New System.Drawing.Size(127, 23)
         Me._saltPasswordTextBoxLabel.TabIndex = 0
@@ -132,7 +134,7 @@ Partial Class MainForm
         Me._masterPasswordTextBoxLabel.BackColor = System.Drawing.Color.Transparent
         Me._masterPasswordTextBoxLabel.Font = New System.Drawing.Font("Segoe Print", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._masterPasswordTextBoxLabel.ForeColor = System.Drawing.Color.Cornsilk
-        Me._masterPasswordTextBoxLabel.Location = New System.Drawing.Point(8, 358)
+        Me._masterPasswordTextBoxLabel.Location = New System.Drawing.Point(38, 360)
         Me._masterPasswordTextBoxLabel.Name = "_masterPasswordTextBoxLabel"
         Me._masterPasswordTextBoxLabel.Size = New System.Drawing.Size(149, 23)
         Me._masterPasswordTextBoxLabel.TabIndex = 0
@@ -146,7 +148,7 @@ Partial Class MainForm
         Me._keyCopyButton.Location = New System.Drawing.Point(305, 466)
         Me._keyCopyButton.Name = "_keyCopyButton"
         Me._keyCopyButton.Size = New System.Drawing.Size(163, 26)
-        Me._keyCopyButton.TabIndex = 12
+        Me._keyCopyButton.TabIndex = 14
         Me._keyCopyButton.Text = "KEY COPY / CLEAR"
         Me._keyCopyButton.UseVisualStyleBackColor = False
         '
@@ -158,7 +160,7 @@ Partial Class MainForm
         Me._encryptedSaltCopyButton.Location = New System.Drawing.Point(305, 434)
         Me._encryptedSaltCopyButton.Name = "_encryptedSaltCopyButton"
         Me._encryptedSaltCopyButton.Size = New System.Drawing.Size(163, 26)
-        Me._encryptedSaltCopyButton.TabIndex = 11
+        Me._encryptedSaltCopyButton.TabIndex = 13
         Me._encryptedSaltCopyButton.Text = "SALT COPY / CLEAR"
         Me._encryptedSaltCopyButton.UseVisualStyleBackColor = False
         '
@@ -172,7 +174,7 @@ Partial Class MainForm
         Me._saltDecryptionCheckBox.Location = New System.Drawing.Point(375, 173)
         Me._saltDecryptionCheckBox.Name = "_saltDecryptionCheckBox"
         Me._saltDecryptionCheckBox.Size = New System.Drawing.Size(93, 17)
-        Me._saltDecryptionCheckBox.TabIndex = 2
+        Me._saltDecryptionCheckBox.TabIndex = 3
         Me._saltDecryptionCheckBox.Text = "DECRYPTION"
         Me._saltDecryptionCheckBox.UseVisualStyleBackColor = False
         '
@@ -186,7 +188,7 @@ Partial Class MainForm
         Me._128bitKeyCheckBox.Location = New System.Drawing.Point(11, 432)
         Me._128bitKeyCheckBox.Name = "_128bitKeyCheckBox"
         Me._128bitKeyCheckBox.Size = New System.Drawing.Size(85, 17)
-        Me._128bitKeyCheckBox.TabIndex = 5
+        Me._128bitKeyCheckBox.TabIndex = 7
         Me._128bitKeyCheckBox.Text = "128 BIT KEY"
         Me._128bitKeyCheckBox.UseVisualStyleBackColor = False
         '
@@ -200,7 +202,7 @@ Partial Class MainForm
         Me._256bitKeyCheckBox.Location = New System.Drawing.Point(11, 455)
         Me._256bitKeyCheckBox.Name = "_256bitKeyCheckBox"
         Me._256bitKeyCheckBox.Size = New System.Drawing.Size(85, 17)
-        Me._256bitKeyCheckBox.TabIndex = 6
+        Me._256bitKeyCheckBox.TabIndex = 8
         Me._256bitKeyCheckBox.Text = "256 BIT KEY"
         Me._256bitKeyCheckBox.UseVisualStyleBackColor = False
         '
@@ -223,7 +225,7 @@ Partial Class MainForm
         Me._helpButton.Location = New System.Drawing.Point(141, 466)
         Me._helpButton.Name = "_helpButton"
         Me._helpButton.Size = New System.Drawing.Size(66, 26)
-        Me._helpButton.TabIndex = 8
+        Me._helpButton.TabIndex = 10
         Me._helpButton.Text = "HELP!"
         Me._helpButton.UseVisualStyleBackColor = False
         '
@@ -239,9 +241,35 @@ Partial Class MainForm
         Me._fastCheckBox.Location = New System.Drawing.Point(305, 365)
         Me._fastCheckBox.Name = "_fastCheckBox"
         Me._fastCheckBox.Size = New System.Drawing.Size(50, 17)
-        Me._fastCheckBox.TabIndex = 9
+        Me._fastCheckBox.TabIndex = 11
         Me._fastCheckBox.Text = "FAST"
         Me._fastCheckBox.UseVisualStyleBackColor = False
+        '
+        '_saltPasswordRndButton
+        '
+        Me._saltPasswordRndButton.BackColor = System.Drawing.Color.Transparent
+        Me._saltPasswordRndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me._saltPasswordRndButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me._saltPasswordRndButton.ForeColor = System.Drawing.Color.Cornsilk
+        Me._saltPasswordRndButton.Location = New System.Drawing.Point(12, 170)
+        Me._saltPasswordRndButton.Name = "_saltPasswordRndButton"
+        Me._saltPasswordRndButton.Size = New System.Drawing.Size(22, 22)
+        Me._saltPasswordRndButton.TabIndex = 2
+        Me._saltPasswordRndButton.Text = "*"
+        Me._saltPasswordRndButton.UseVisualStyleBackColor = False
+        '
+        '_masterPasswordRndButton
+        '
+        Me._masterPasswordRndButton.BackColor = System.Drawing.Color.Transparent
+        Me._masterPasswordRndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me._masterPasswordRndButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me._masterPasswordRndButton.ForeColor = System.Drawing.Color.Cornsilk
+        Me._masterPasswordRndButton.Location = New System.Drawing.Point(12, 361)
+        Me._masterPasswordRndButton.Name = "_masterPasswordRndButton"
+        Me._masterPasswordRndButton.Size = New System.Drawing.Size(22, 22)
+        Me._masterPasswordRndButton.TabIndex = 6
+        Me._masterPasswordRndButton.Text = "*"
+        Me._masterPasswordRndButton.UseVisualStyleBackColor = False
         '
         'MainForm
         '
@@ -250,6 +278,8 @@ Partial Class MainForm
         Me.BackColor = System.Drawing.Color.Black
         Me.BackgroundImage = Global.AntiBruteForcer.My.Resources.Resources.Background
         Me.ClientSize = New System.Drawing.Size(479, 504)
+        Me.Controls.Add(Me._masterPasswordRndButton)
+        Me.Controls.Add(Me._saltPasswordRndButton)
         Me.Controls.Add(Me._fastCheckBox)
         Me.Controls.Add(Me._helpButton)
         Me.Controls.Add(Me._IntelInsidePictureBox)
@@ -295,4 +325,6 @@ Partial Class MainForm
     Friend WithEvents _IntelInsidePictureBox As PictureBox
     Friend WithEvents _helpButton As Button
     Friend WithEvents _fastCheckBox As CheckBox
+    Friend WithEvents _saltPasswordRndButton As Button
+    Friend WithEvents _masterPasswordRndButton As Button
 End Class
