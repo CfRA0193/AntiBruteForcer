@@ -318,32 +318,32 @@ Public Class MainForm
     End Sub
 
     Private Sub _saltPasswordRndButton_Click(sender As Object, e As EventArgs) Handles _saltPasswordRndButton.Click
+        _saltPasswordTextBox.Text = String.Empty
         Dim es = GetEncryptedSalt(e, Guid.NewGuid().ToString("B"))
         Dim H4 As New SHA1Managed() '160 bit
         With _saltPasswordTextBox
-            .PasswordChar = If(.PasswordChar = "■", String.Empty, "■")
+            .PasswordChar = If(.PasswordChar = "•", String.Empty, "•")
             .Text = Convert.ToBase64String(H4.ComputeHash(Encoding.UTF8.GetBytes(es))).Substring(0, _rndPassLen)
         End With
-        If _saltPasswordTextBox.PasswordChar = "■" Then
+        If _saltPasswordTextBox.PasswordChar = "•" Then
             _saltPasswordTextBox.Text = String.Empty
-            _saltPasswordTextBox.Font = New Font(FontFamily.GenericSansSerif, _saltPasswordTextBox.Font.Size - _rndPassSizeUp)
-        Else
-            _saltPasswordTextBox.Font = New Font(FontFamily.GenericMonospace, _saltPasswordTextBox.Font.Size + _rndPassSizeUp)
         End If
+        If _saltPasswordTextBox.Text = String.Empty Then _saltPasswordRndButton_Click(sender, e)
+        _deriveKeyButton.Focus()
     End Sub
 
     Private Sub _masterPasswordRndButton_Click(sender As Object, e As EventArgs) Handles _masterPasswordRndButton.Click
+        _masterPasswordTextBox.Text = String.Empty
         Dim es = GetEncryptedSalt(e, Guid.NewGuid().ToString("B"))
         Dim H4 As New SHA1Managed() '160 bit
         With _masterPasswordTextBox
-            .PasswordChar = If(.PasswordChar = "■", String.Empty, "■")
+            .PasswordChar = If(.PasswordChar = "•", String.Empty, "•")
             .Text = Convert.ToBase64String(H4.ComputeHash(Encoding.UTF8.GetBytes(es))).Substring(0, _rndPassLen)
         End With
-        If _masterPasswordTextBox.PasswordChar = "■" Then
+        If _masterPasswordTextBox.PasswordChar = "•" Then
             _masterPasswordTextBox.Text = String.Empty
-            _masterPasswordTextBox.Font = New Font(FontFamily.GenericSansSerif, _masterPasswordTextBox.Font.Size - _rndPassSizeUp)
-        Else
-            _masterPasswordTextBox.Font = New Font(FontFamily.GenericMonospace, _masterPasswordTextBox.Font.Size + _rndPassSizeUp)
         End If
+        If _masterPasswordTextBox.Text = String.Empty Then _masterPasswordRndButton_Click(sender, e)
+        _deriveKeyButton.Focus()
     End Sub
 End Class

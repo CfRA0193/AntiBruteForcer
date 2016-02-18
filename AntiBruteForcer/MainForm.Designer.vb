@@ -47,10 +47,11 @@ Partial Class MainForm
         '_masterPasswordTextBox
         '
         Me._masterPasswordTextBox.BackColor = System.Drawing.Color.LightSkyBlue
+        Me._masterPasswordTextBox.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._masterPasswordTextBox.Location = New System.Drawing.Point(11, 335)
         Me._masterPasswordTextBox.Name = "_masterPasswordTextBox"
-        Me._masterPasswordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(9632)
-        Me._masterPasswordTextBox.Size = New System.Drawing.Size(457, 20)
+        Me._masterPasswordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(8226)
+        Me._masterPasswordTextBox.Size = New System.Drawing.Size(457, 26)
         Me._masterPasswordTextBox.TabIndex = 5
         '
         '_saltGenerationCheckBox
@@ -96,11 +97,12 @@ Partial Class MainForm
         '_saltPasswordTextBox
         '
         Me._saltPasswordTextBox.BackColor = System.Drawing.Color.LightSkyBlue
+        Me._saltPasswordTextBox.Font = New System.Drawing.Font("Consolas", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._saltPasswordTextBox.ForeColor = System.Drawing.Color.Black
         Me._saltPasswordTextBox.Location = New System.Drawing.Point(11, 144)
         Me._saltPasswordTextBox.Name = "_saltPasswordTextBox"
-        Me._saltPasswordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(9632)
-        Me._saltPasswordTextBox.Size = New System.Drawing.Size(457, 20)
+        Me._saltPasswordTextBox.PasswordChar = Global.Microsoft.VisualBasic.ChrW(8226)
+        Me._saltPasswordTextBox.Size = New System.Drawing.Size(457, 26)
         Me._saltPasswordTextBox.TabIndex = 1
         '
         '_keyRichTextBox
@@ -122,7 +124,7 @@ Partial Class MainForm
         Me._saltPasswordTextBoxLabel.BackColor = System.Drawing.Color.Transparent
         Me._saltPasswordTextBoxLabel.Font = New System.Drawing.Font("Segoe Print", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me._saltPasswordTextBoxLabel.ForeColor = System.Drawing.Color.Cornsilk
-        Me._saltPasswordTextBoxLabel.Location = New System.Drawing.Point(38, 169)
+        Me._saltPasswordTextBoxLabel.Location = New System.Drawing.Point(38, 172)
         Me._saltPasswordTextBoxLabel.Name = "_saltPasswordTextBoxLabel"
         Me._saltPasswordTextBoxLabel.Size = New System.Drawing.Size(127, 23)
         Me._saltPasswordTextBoxLabel.TabIndex = 0
@@ -134,7 +136,7 @@ Partial Class MainForm
         Me._masterPasswordTextBoxLabel.BackColor = System.Drawing.Color.Transparent
         Me._masterPasswordTextBoxLabel.Font = New System.Drawing.Font("Segoe Print", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._masterPasswordTextBoxLabel.ForeColor = System.Drawing.Color.Cornsilk
-        Me._masterPasswordTextBoxLabel.Location = New System.Drawing.Point(38, 360)
+        Me._masterPasswordTextBoxLabel.Location = New System.Drawing.Point(38, 363)
         Me._masterPasswordTextBoxLabel.Name = "_masterPasswordTextBoxLabel"
         Me._masterPasswordTextBoxLabel.Size = New System.Drawing.Size(149, 23)
         Me._masterPasswordTextBoxLabel.TabIndex = 0
@@ -171,7 +173,7 @@ Partial Class MainForm
         Me._saltDecryptionCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me._saltDecryptionCheckBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._saltDecryptionCheckBox.ForeColor = System.Drawing.Color.Cornsilk
-        Me._saltDecryptionCheckBox.Location = New System.Drawing.Point(375, 173)
+        Me._saltDecryptionCheckBox.Location = New System.Drawing.Point(375, 177)
         Me._saltDecryptionCheckBox.Name = "_saltDecryptionCheckBox"
         Me._saltDecryptionCheckBox.Size = New System.Drawing.Size(93, 17)
         Me._saltDecryptionCheckBox.TabIndex = 3
@@ -249,11 +251,11 @@ Partial Class MainForm
         '
         Me._saltPasswordRndButton.BackColor = System.Drawing.Color.Transparent
         Me._saltPasswordRndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me._saltPasswordRndButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me._saltPasswordRndButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._saltPasswordRndButton.ForeColor = System.Drawing.Color.Cornsilk
-        Me._saltPasswordRndButton.Location = New System.Drawing.Point(12, 170)
+        Me._saltPasswordRndButton.Location = New System.Drawing.Point(12, 175)
         Me._saltPasswordRndButton.Name = "_saltPasswordRndButton"
-        Me._saltPasswordRndButton.Size = New System.Drawing.Size(22, 22)
+        Me._saltPasswordRndButton.Size = New System.Drawing.Size(20, 20)
         Me._saltPasswordRndButton.TabIndex = 2
         Me._saltPasswordRndButton.Text = "*"
         Me._saltPasswordRndButton.UseVisualStyleBackColor = False
@@ -262,11 +264,11 @@ Partial Class MainForm
         '
         Me._masterPasswordRndButton.BackColor = System.Drawing.Color.Transparent
         Me._masterPasswordRndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me._masterPasswordRndButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
+        Me._masterPasswordRndButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._masterPasswordRndButton.ForeColor = System.Drawing.Color.Cornsilk
-        Me._masterPasswordRndButton.Location = New System.Drawing.Point(12, 361)
+        Me._masterPasswordRndButton.Location = New System.Drawing.Point(12, 366)
         Me._masterPasswordRndButton.Name = "_masterPasswordRndButton"
-        Me._masterPasswordRndButton.Size = New System.Drawing.Size(22, 22)
+        Me._masterPasswordRndButton.Size = New System.Drawing.Size(20, 20)
         Me._masterPasswordRndButton.TabIndex = 6
         Me._masterPasswordRndButton.Text = "*"
         Me._masterPasswordRndButton.UseVisualStyleBackColor = False

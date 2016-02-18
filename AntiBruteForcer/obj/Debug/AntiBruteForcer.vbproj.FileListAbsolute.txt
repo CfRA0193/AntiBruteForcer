@@ -1,0 +1,11 @@
+C:\Cleverflow.office\me.storage\AntiBruteForcer\bin\Debug\AntiBruteForcer.exe.config
+C:\Cleverflow.office\me.storage\AntiBruteForcer\bin\Debug\AntiBruteForcer.exe
+C:\Cleverflow.office\me.storage\AntiBruteForcer\bin\Debug\AntiBruteForcer.pdb
+C:\Cleverflow.office\me.storage\AntiBruteForcer\bin\Debug\AntiBruteForcer.xml
+C:\Cleverflow.office\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Debug\AntiBruteForcer.vbprojResolveAssemblyReference.cache
+C:\Cleverflow.office\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Debug\AntiBruteForcer.MainForm.resources
+C:\Cleverflow.office\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Debug\AntiBruteForcer.Resources.resources
+C:\Cleverflow.office\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Debug\AntiBruteForcer.vbproj.GenerateResource.Cache
+C:\Cleverflow.office\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Debug\AntiBruteForcer.exe
+C:\Cleverflow.office\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Debug\AntiBruteForcer.xml
+C:\Cleverflow.office\me.storage\AntiBruteForcer\AntiBruteForcer\obj\Debug\AntiBruteForcer.pdb
