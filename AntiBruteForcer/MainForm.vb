@@ -77,6 +77,7 @@ Public Class MainForm
 
     Private Sub _deriveKeyButton_Click(sender As Object, e As EventArgs) Handles _deriveKeyButton.Click
         Try
+            _encryptedSaltRichTextBox.Focus()
             _128bitKeyCheckBox.Visible = False : _256bitKeyCheckBox.Visible = False : _saltDecryptionCheckBox.Visible = False : _fastCheckBox.Visible = False
             _helpButton.Visible = False : _deriveKeyButton.Visible = False : _encryptedSaltCopyButton.Visible = False
             _keyCopyButton.Visible = False : Application.DoEvents()
@@ -217,6 +218,10 @@ Public Class MainForm
         UpdateEncryptedSalt(sender, e)
     End Sub
 
+    Private Sub _saltPasswordRndButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltPasswordRndButton.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
     Private Sub _saltPasswordTextBoxLabel_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltPasswordTextBoxLabel.MouseMove
         UpdateEncryptedSalt(sender, e)
     End Sub
@@ -230,6 +235,10 @@ Public Class MainForm
     End Sub
 
     Private Sub _masterPasswordTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _masterPasswordTextBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _masterPasswordRndButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _masterPasswordRndButton.MouseMove
         UpdateEncryptedSalt(sender, e)
     End Sub
 
@@ -293,26 +302,26 @@ Public Class MainForm
         With _encryptedSaltRichTextBox
             .ClearUndo()
             .ClearUndo()
-            .Text = "This is a text box to store encrypted 'salt' message, which must be saved in comments of archive or in txt-file... Don't encrypt filenames in archive, because without access to archive's comment you will not be able to decrypt it! Always check derived key (try to decrypt archive)!"
+            .Text = "Text box to store encrypted 'salt message', which must be saved in comments of archive or in txt-file... Don't encrypt filenames in archive, because without access to archive's comment you will not be able to decrypt it! Always check derived key (try to decrypt archive)!"
         End With
 
         With _saltPasswordTextBox
             .ClearUndo()
             .Clear()
-            .Text = "This is a password to protect 'salt', placed above..."
+            .Text = "Password to encrypt 'salt message' (private)..."
             .PasswordChar = String.Empty
         End With
 
         With _keyRichTextBox
             .ClearUndo()
             .Clear()
-            .Text = "This is a text box to store derived key, which will be used by you to encrypt archive..."
+            .Text = "Text box to store derived key, which will be used by you to encrypt archive..."
         End With
 
         With _masterPasswordTextBox
             .ClearUndo()
             .Clear()
-            .Text = "This is a master password, and it is the only one, which must be saved in your memory :)"
+            .Text = "MASTER PASSWORD (PRIVATE)..."
             .PasswordChar = String.Empty
         End With
     End Sub

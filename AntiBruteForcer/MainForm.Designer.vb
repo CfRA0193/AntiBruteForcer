@@ -249,7 +249,7 @@ Partial Class MainForm
         '
         '_saltPasswordRndButton
         '
-        Me._saltPasswordRndButton.BackColor = System.Drawing.Color.Transparent
+        Me._saltPasswordRndButton.BackColor = System.Drawing.Color.Black
         Me._saltPasswordRndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me._saltPasswordRndButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._saltPasswordRndButton.ForeColor = System.Drawing.Color.Cornsilk
@@ -262,7 +262,7 @@ Partial Class MainForm
         '
         '_masterPasswordRndButton
         '
-        Me._masterPasswordRndButton.BackColor = System.Drawing.Color.Transparent
+        Me._masterPasswordRndButton.BackColor = System.Drawing.Color.Black
         Me._masterPasswordRndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me._masterPasswordRndButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(204, Byte))
         Me._masterPasswordRndButton.ForeColor = System.Drawing.Color.Cornsilk
