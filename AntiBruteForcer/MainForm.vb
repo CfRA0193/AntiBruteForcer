@@ -5,44 +5,75 @@ Imports Jebtek.RdRand
 Imports Scrypt
 
 Public Class MainForm
+    Private Const _saltBlockSize As Integer = 20
+    Private Const _nIters As Integer = 262144
+    Private Const _nItersFast As Integer = _nIters / 8
+    Private Const _deriveBlocksCount As Integer = 10
+    Private Const _messageWidth = 16
+    Private Const _rndPassLen = 8
+    Private Const _encryptedSaltSize = 479
+
     Private _salt As New List(Of Byte)
     Private _distrMap As Long()
     Private _saltTitle As String = "AntiBruteForcer ENCRYPTED SALT"
     Private _keyTitle As String = "AntiBruteForcer KEY"
-    Private _saltBlockSize As Integer = 20
-    Private _nIters As Integer = 262144
-    Private _nItersFast As Integer = _nIters / 8
-    Private _deriveBlocksCount As Integer = 10
-    Private _messageWidth = 16
+
     Private _rdRand As Boolean = False
-    Private _rndPassLen = 8
-    Private _rndPassSizeUp = 4
 
-    Private Function Hash1600(bytesToHash As Byte(), Optional paddingLength As Integer = 0) As Byte()
-        Dim HR As New List(Of Byte)
-        Dim H1 As New SHA512Managed    '512 bit
-        Dim H2 As New SHA384Managed    '384 bit
-        Dim H3 As New SHA256Managed    '256 bit
-        Dim H4 As New SHA1Managed      '160 bit
-        Dim H5 As New RIPEMD160Managed '160 bit
-        Dim H6 As New MD5CryptoServiceProvider() '128 bit
+    Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Text = My.Application.Info.Title.ToString() + " [" + My.Application.Info.Version.ToString() + "]"
+        Dim rdRandomGeneratorAvailable = False
+        Try
+            rdRandomGeneratorAvailable = RdRandom.GeneratorAvailable()
+        Catch
+        End Try
+        If rdRandomGeneratorAvailable Then
+            _IntelInsidePictureBox.Visible = True : _rdRand = True
+        Else
+            _IntelInsidePictureBox.Visible = False
+        End If
+    End Sub
 
-        HR.AddRange(H1.ComputeHash(bytesToHash))
-        HR.AddRange(H2.ComputeHash(bytesToHash))
-        HR.AddRange(H3.ComputeHash(bytesToHash))
-        HR.AddRange(H4.ComputeHash(bytesToHash))
-        HR.AddRange(H5.ComputeHash(bytesToHash))
-        HR.AddRange(H6.ComputeHash(bytesToHash))
+    Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        _encryptedSaltRichTextBox.ClearUndo() : _encryptedSaltRichTextBox.Clear()
+        _saltPasswordTextBox.ClearUndo() : _saltPasswordTextBox.Clear()
+        _keyRichTextBox.ClearUndo() : _keyRichTextBox.Clear()
+        _masterPasswordTextBox.ClearUndo() : _masterPasswordTextBox.Clear()
 
-        Dim padding = New Byte(paddingLength - 1) {}
-        Dim rng As New RNGCryptoServiceProvider() : rng.GetBytes(padding)
-        HR.AddRange(padding)
-
-        Return HR.ToArray()
-    End Function
+        Clipboard.Clear()
+    End Sub
 
     Private Sub UpdateEncryptedSalt(e As MouseEventArgs)
         _encryptedSaltRichTextBox.Text = GetEncryptedSalt(e, _saltPasswordTextBox.Text)
+        Dim encryptedSaltBytes = GetEncryptedSaltBytes()
+        If _encryptedSaltSize <> encryptedSaltBytes.Length Then
+            Throw New Exception("_encryptedSaltSize <> encryptedSaltBytes.Length")
+        End If
+    End Sub
+
+    Private Function GetEncryptedSaltBytes() As Byte()
+        Using ms = New MemoryStream
+            Using sw = New StreamWriter(ms, Encoding.ASCII)
+                sw.Write(_encryptedSaltRichTextBox.Text) : sw.Flush()
+                ms.Seek(0, SeekOrigin.Begin)
+            End Using
+            Return ms.ToArray()
+        End Using
+    End Function
+
+    Private Sub SetEncryptedSaltFromStream(stream As Stream, endOffset As Long)
+        stream.Seek(-endOffset, SeekOrigin.End)
+        Using sr = New StreamReader(stream, Encoding.ASCII)
+            Dim encryptedSalt = sr.ReadToEnd()
+            If _encryptedSaltSize <> encryptedSalt.Length Then
+                Throw New Exception("_encryptedSaltSize <> encryptedSalt.Length")
+            End If
+            With _encryptedSaltRichTextBox
+                .ClearUndo()
+                .Clear()
+                .Text = encryptedSalt.Trim()
+            End With
+        End Using
     End Sub
 
     Private Function GetEncryptedSalt(e As MouseEventArgs, saltPassword As String) As String
@@ -77,12 +108,16 @@ Public Class MainForm
 
     Private Sub _deriveKeyButton_Click(sender As Object, e As EventArgs) Handles _deriveKeyButton.Click
         Try
-            _encryptedSaltRichTextBox.Focus()
-            _128bitKeyCheckBox.Visible = False : _256bitKeyCheckBox.Visible = False : _saltDecryptionCheckBox.Visible = False : _fastCheckBox.Visible = False
-            _helpButton.Visible = False : _deriveKeyButton.Visible = False : _encryptedSaltCopyButton.Visible = False
-            _keyCopyButton.Visible = False : Application.DoEvents()
+            _saltPasswordTextBox.Visible = False : _saltPasswordRndButton.Visible = False : _saltPasswordTextBoxLabel.Visible = False
+            _saltDecryptionCheckBox.Visible = False : _masterPasswordTextBox.Visible = False : _masterPasswordRndButton.Visible = False
+            _masterPasswordTextBoxLabel.Visible = False : _embedReadButton.Visible = False : _96bitKeyCheckBox.Visible = False
+            _384bitKeyCheckBox.Visible = False : _saltGenerationCheckBox.Visible = False : _helpButton.Visible = False
+            _fastCheckBox.Visible = False : _deriveKeyButton.Visible = False : _encryptedSaltCopyButton.Visible = False
+            _keyCopyButton.Visible = False
 
-            _saltGenerationCheckBox.Checked = False : _saltGenerationCheckBox.Visible = False : _keyRichTextBox.Text = "Started to derive key..." + vbCrLf
+            _saltGenerationCheckBox.Checked = False : _encryptedSaltRichTextBox.Focus()
+
+            _keyRichTextBox.Text = "Started to derive key..." + vbCrLf
             If Not _saltDecryptionCheckBox.Checked Then UpdateEncryptedSalt(e)
             _saltPasswordTextBox.Text = _saltPasswordTextBox.Text.Trim()
             _masterPasswordTextBox.Text = _masterPasswordTextBox.Text.Trim()
@@ -103,11 +138,12 @@ Public Class MainForm
                 _keyRichTextBox.AppendText(((_deriveBlocksCount - 1) - i).ToString()) : Application.DoEvents()
             Next
             Dim result As Byte() = Nothing
-            If _128bitKeyCheckBox.Checked Or _256bitKeyCheckBox.Checked Then
-                Dim H3 As New SHA256Managed
-                Dim shortKey = New MemoryStream(H3.ComputeHash(resultKey.ToArray()))
-                If _128bitKeyCheckBox.Checked Then shortKey.SetLength(12) Else shortKey.SetLength(24)
-                result = shortKey.ToArray()
+            If _96bitKeyCheckBox.Checked Or _384bitKeyCheckBox.Checked Then
+                Dim H2 As New SHA384Managed
+                Dim shortKeyStream = New MemoryStream(H2.ComputeHash(resultKey.ToArray()))
+                shortKeyStream.Seek(0, SeekOrigin.Begin)
+                If _96bitKeyCheckBox.Checked Then shortKeyStream.SetLength(12) Else shortKeyStream.SetLength(48)
+                result = shortKeyStream.ToArray()
             Else
                 result = resultKey.ToArray()
             End If
@@ -120,9 +156,12 @@ Public Class MainForm
             MessageBox.Show("Can't derive key!")
             _keyRichTextBox.ClearUndo() : _keyRichTextBox.Clear()
         Finally
-            _128bitKeyCheckBox.Visible = True : _256bitKeyCheckBox.Visible = True : _saltGenerationCheckBox.Visible = True : _fastCheckBox.Visible = True
-            _saltDecryptionCheckBox.Visible = True : _helpButton.Visible = True : _deriveKeyButton.Visible = True
-            _encryptedSaltCopyButton.Visible = True : _keyCopyButton.Visible = True
+            _saltPasswordTextBox.Visible = True : _saltPasswordRndButton.Visible = True : _saltPasswordTextBoxLabel.Visible = True
+            _saltDecryptionCheckBox.Visible = True : _masterPasswordTextBox.Visible = True : _masterPasswordRndButton.Visible = True
+            _masterPasswordTextBoxLabel.Visible = True : _embedReadButton.Visible = True : _96bitKeyCheckBox.Visible = True
+            _384bitKeyCheckBox.Visible = True : _saltGenerationCheckBox.Visible = True : _helpButton.Visible = True
+            _fastCheckBox.Visible = True : _deriveKeyButton.Visible = True : _encryptedSaltCopyButton.Visible = True
+            _keyCopyButton.Visible = True
         End Try
     End Sub
 
@@ -134,7 +173,7 @@ Public Class MainForm
             Next
             Clipboard.SetText(saltSb.ToString())
             _encryptedSaltRichTextBox.ClearUndo() : _encryptedSaltRichTextBox.Clear()
-        Catch ex As Exception
+        Catch
             MessageBox.Show("Can't copy encrypted 'salt' to clipboard!")
         End Try
     End Sub
@@ -147,7 +186,7 @@ Public Class MainForm
             Next
             Clipboard.SetText(keySb.ToString())
             _keyRichTextBox.ClearUndo() : _keyRichTextBox.Clear()
-        Catch ex As Exception
+        Catch
             MessageBox.Show("Can't copy derived key to clipboard!")
         End Try
     End Sub
@@ -160,122 +199,27 @@ Public Class MainForm
             End With
             _IntelInsidePictureBox.Visible = False
             _encryptedSaltRichTextBox.Clear()
+            _embedReadButton.Text = "READ SALT (FILE)"
         Else
+            _embedReadButton.Text = "EMBED SALT (FILE)"
             With _saltGenerationCheckBox
                 .Enabled = True
-                .Checked = True
             End With
             _IntelInsidePictureBox.Visible = True
         End If
     End Sub
 
     Private Sub UpdateEncryptedSalt(sender As Object, e As MouseEventArgs)
-        If _saltGenerationCheckBox.Checked Then
+        If _saltGenerationCheckBox.Checked AndAlso Not _saltDecryptionCheckBox.Checked Then
             UpdateEncryptedSalt(e)
         End If
     End Sub
 
-    Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.Text = My.Application.Info.Title.ToString() + " [" + My.Application.Info.Version.ToString() + "]"
-        Dim rdRandomGeneratorAvailable = False
-        Try
-            rdRandomGeneratorAvailable = RdRandom.GeneratorAvailable()
-        Catch
-        End Try
-        If rdRandomGeneratorAvailable Then
-            _IntelInsidePictureBox.Visible = True : _rdRand = True
-        Else
-            _IntelInsidePictureBox.Visible = False
+    Private Sub UpdateEncryptedSalt()
+        Dim mea = New MouseEventArgs(MouseButtons.None, 0, DateTime.Now.Ticks Mod Integer.MaxValue, DateTime.Now.Ticks Mod If(_saltPasswordTextBox.Text.Length <> 0, _saltPasswordTextBox.Text.Length, 1), 0)
+        If Not _saltDecryptionCheckBox.Checked Then
+            UpdateEncryptedSalt(mea)
         End If
-    End Sub
-
-    Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        _encryptedSaltRichTextBox.ClearUndo() : _encryptedSaltRichTextBox.Clear()
-        _saltPasswordTextBox.ClearUndo() : _saltPasswordTextBox.Clear()
-        _keyRichTextBox.ClearUndo() : _keyRichTextBox.Clear()
-        _masterPasswordTextBox.ClearUndo() : _masterPasswordTextBox.Clear()
-
-        Clipboard.Clear()
-    End Sub
-
-    Private Sub _128bitKeyCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _128bitKeyCheckBox.CheckedChanged
-        If _128bitKeyCheckBox.Checked Then _256bitKeyCheckBox.Checked = False
-    End Sub
-
-    Private Sub _256bitKeyCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _256bitKeyCheckBox.CheckedChanged
-        If _256bitKeyCheckBox.Checked Then _128bitKeyCheckBox.Checked = False
-    End Sub
-
-    Private Sub MainForm_MouseMove(sender As Object, e As MouseEventArgs) Handles MyBase.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _encryptedSaltRichTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _encryptedSaltRichTextBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _saltPasswordTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltPasswordTextBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _saltPasswordRndButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltPasswordRndButton.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _saltPasswordTextBoxLabel_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltPasswordTextBoxLabel.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _saltDecryptionCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltDecryptionCheckBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _keyRichTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _keyRichTextBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _masterPasswordTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _masterPasswordTextBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _masterPasswordRndButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _masterPasswordRndButton.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _masterPasswordTextBoxLabel_MouseMove(sender As Object, e As MouseEventArgs) Handles _masterPasswordTextBoxLabel.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _128bitKeyCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _128bitKeyCheckBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _256bitKeyCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _256bitKeyCheckBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _saltGenerationCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltGenerationCheckBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _helpButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _helpButton.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _IntelInsidePictureBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _IntelInsidePictureBox.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _deriveKeyButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _deriveKeyButton.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _encryptedSaltCopyButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _encryptedSaltCopyButton.MouseMove
-        UpdateEncryptedSalt(sender, e)
-    End Sub
-
-    Private Sub _keyCopyButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _keyCopyButton.MouseMove
-        UpdateEncryptedSalt(sender, e)
     End Sub
 
     Private Sub _saltGenerationCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _saltGenerationCheckBox.CheckedChanged
@@ -285,13 +229,13 @@ Public Class MainForm
             With _saltPasswordTextBox
                 .ClearUndo()
                 .Clear()
-                .PasswordChar = "■"
+                .PasswordChar = "•"
             End With
 
             With _masterPasswordTextBox
                 .ClearUndo()
                 .Clear()
-                .PasswordChar = "■"
+                .PasswordChar = "•"
             End With
         End If
     End Sub
@@ -354,5 +298,186 @@ Public Class MainForm
         End If
         If _masterPasswordTextBox.Text = String.Empty Then _masterPasswordRndButton_Click(sender, e)
         _deriveKeyButton.Focus()
+    End Sub
+
+    Private Sub _embedReadButton_Click(sender As Object, e As EventArgs) Handles _embedReadButton.Click
+        _saltGenerationCheckBox.Checked = False
+        Try
+            Dim ofd = New OpenFileDialog
+            With ofd
+                .RestoreDirectory = True
+                .AddExtension = True
+                .DefaultExt = ".*"
+                .Filter = "All files (*.*)|*.*"
+            End With
+            If ofd.ShowDialog() = DialogResult.OK Then
+                If _saltDecryptionCheckBox.Checked Then
+                    If File.Exists(ofd.FileName) Then
+                        Using fs = File.OpenRead(ofd.FileName)
+                            SetEncryptedSaltFromStream(fs, _encryptedSaltSize)
+                        End Using
+                        MessageBox.Show("READ SALT (FILE): OK")
+                    Else
+                        MessageBox.Show("READ SALT (FILE): NO FILE!")
+                    End If
+                Else
+                    If File.Exists(ofd.FileName) Then
+                        File.SetAttributes(ofd.FileName, FileAttributes.Normal)
+                        Dim encryptedSaltBytes As Byte()
+                        Dim encryptedSaltBytesRead = New Byte(_encryptedSaltSize - 1) {}
+                        Using fs = File.OpenWrite(ofd.FileName)
+                            fs.Seek(0, SeekOrigin.End)
+                            encryptedSaltBytes = GetEncryptedSaltBytes()
+                            fs.Write(encryptedSaltBytes, 0, encryptedSaltBytes.Length)
+                            fs.Flush() : fs.Close()
+                        End Using
+                        Using fs = File.OpenRead(ofd.FileName)
+                            Dim readCount = 0
+                            With fs
+                                .Seek(-_encryptedSaltSize, SeekOrigin.End)
+                                readCount = .Read(encryptedSaltBytesRead, 0, _encryptedSaltSize)
+                                .Close()
+                            End With
+                            If readCount <> _encryptedSaltSize Then
+                                Throw New Exception("readCount <> _encryptedSaltSize")
+                            End If
+                            For i = 0 To _encryptedSaltSize - 1
+                                If encryptedSaltBytes(i) <> encryptedSaltBytesRead(i) Then
+                                    Throw New Exception("encryptedSaltBytes(i) <> encryptedSaltBytesRead(i)")
+                                End If
+                            Next
+                        End Using
+                        MessageBox.Show("EMBED SALT (FILE): OK")
+                    Else
+                        MessageBox.Show("EMBED SALT (FILE): NO FILE!")
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Can't process file!")
+        End Try
+    End Sub
+
+    Private Sub _96bitKeyCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _96bitKeyCheckBox.CheckedChanged
+        If _96bitKeyCheckBox.Checked Then _384bitKeyCheckBox.Checked = False
+    End Sub
+
+    Private Sub _384bitKeyCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _384bitKeyCheckBox.CheckedChanged
+        If _384bitKeyCheckBox.Checked Then _96bitKeyCheckBox.Checked = False
+    End Sub
+
+    Private Sub MainForm_MouseMove(sender As Object, e As MouseEventArgs) Handles MyBase.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _encryptedSaltRichTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _encryptedSaltRichTextBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _saltPasswordTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltPasswordTextBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _saltPasswordRndButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltPasswordRndButton.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _saltPasswordTextBoxLabel_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltPasswordTextBoxLabel.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _saltDecryptionCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltDecryptionCheckBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _keyRichTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _keyRichTextBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _masterPasswordTextBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _masterPasswordTextBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _masterPasswordRndButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _masterPasswordRndButton.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _masterPasswordTextBoxLabel_MouseMove(sender As Object, e As MouseEventArgs) Handles _masterPasswordTextBoxLabel.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _embedReadButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _embedReadButton.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _96bitKeyCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _96bitKeyCheckBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _384bitKeyCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _384bitKeyCheckBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _saltGenerationCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _saltGenerationCheckBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _helpButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _helpButton.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _IntelInsidePictureBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _IntelInsidePictureBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _deriveKeyButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _deriveKeyButton.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _encryptedSaltCopyButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _encryptedSaltCopyButton.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _keyCopyButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _keyCopyButton.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
+    Private Sub _encryptedSaltRichTextBox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles _encryptedSaltRichTextBox.KeyPress
+        If Not _saltDecryptionCheckBox.Checked Then
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub _keyRichTextBox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles _keyRichTextBox.KeyPress
+        e.Handled = True
+    End Sub
+
+    Private Function Hash1600(bytesToHash As Byte(), Optional paddingLength As Integer = 0) As Byte()
+        Dim HR As New List(Of Byte)
+        Dim H1 As New SHA512Managed    '512 bit
+        Dim H2 As New SHA384Managed    '384 bit
+        Dim H3 As New SHA256Managed    '256 bit
+        Dim H4 As New SHA1Managed      '160 bit
+        Dim H5 As New RIPEMD160Managed '160 bit
+        Dim H6 As New MD5CryptoServiceProvider() '128 bit
+
+        HR.AddRange(H1.ComputeHash(bytesToHash))
+        HR.AddRange(H2.ComputeHash(bytesToHash))
+        HR.AddRange(H3.ComputeHash(bytesToHash))
+        HR.AddRange(H4.ComputeHash(bytesToHash))
+        HR.AddRange(H5.ComputeHash(bytesToHash))
+        HR.AddRange(H6.ComputeHash(bytesToHash))
+
+        Dim padding = New Byte(paddingLength - 1) {}
+        Dim rng As New RNGCryptoServiceProvider() : rng.GetBytes(padding)
+        HR.AddRange(padding)
+
+        Return HR.ToArray()
+    End Function
+
+    Private Sub _saltPasswordTextBox_TextChanged(sender As Object, e As EventArgs) Handles _saltPasswordTextBox.TextChanged
+        If Not _saltDecryptionCheckBox.Checked Then
+            UpdateEncryptedSalt()
+        End If
     End Sub
 End Class
