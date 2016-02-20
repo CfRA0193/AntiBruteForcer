@@ -5,13 +5,14 @@ Imports Jebtek.RdRand
 Imports Scrypt
 
 Public Class MainForm
-    Private Const _saltBlockSize As Integer = 20
-    Private Const _nIters As Integer = 262144
-    Private Const _nItersFast As Integer = _nIters / 8
-    Private Const _deriveBlocksCount As Integer = 10
-    Private Const _messageWidth = 16
-    Private Const _rndPassLen = 8
-    Private Const _encryptedSaltSize = 479
+    Private Const _saltBlockSize As Integer = 20 '20
+    Private Const _nIters As Integer = 262144 '262144
+    Private Const _nItersFast As Integer = _nIters / 8 '_nIters / 8
+    Private Const _deriveBlocksCount As Integer = 10 '10
+    Private Const _messageWidth = 16 '16
+    Private Const _rndPassLen = 8 '8
+    Private Const _encryptedSaltSize = 479 '479
+    Private Const _fileSaltCopies = 2184 '2184
 
     Private _salt As New List(Of Byte)
     Private _distrMap As Long()
@@ -61,18 +62,29 @@ Public Class MainForm
         End Using
     End Function
 
-    Private Sub SetEncryptedSaltFromStream(stream As Stream, endOffset As Long)
-        stream.Seek(-endOffset, SeekOrigin.End)
-        Using sr = New StreamReader(stream, Encoding.ASCII)
-            Dim encryptedSalt = sr.ReadToEnd()
-            If _encryptedSaltSize <> encryptedSalt.Length Then
-                Throw New Exception("_encryptedSaltSize <> encryptedSalt.Length")
-            End If
-            With _encryptedSaltRichTextBox
-                .ClearUndo()
-                .Clear()
-                .Text = encryptedSalt.Trim()
-            End With
+    Private Sub SetEncryptedSaltFromStream(stream As Stream, bytesFromEnd As Long)
+        bytesFromEnd = If((stream.Length - bytesFromEnd) < 0, stream.Length, bytesFromEnd)
+        stream.Seek(-bytesFromEnd, SeekOrigin.End)
+        Dim sizeToRead = stream.Length - stream.Position
+        Dim rawBuffer = New Byte(sizeToRead - 1) {}
+        Dim dataCounter = stream.Read(rawBuffer, 0, sizeToRead)
+        If dataCounter <> sizeToRead Then
+            Throw New Exception("dataCounter <> sizeToRead")
+        End If
+        Dim decoded = Base64Sync.Decode(rawBuffer, _saltTitle, _messageWidth)
+        Dim encoded = Base64Sync.Encode(decoded, _saltTitle, _messageWidth)
+        Using ms = New MemoryStream(encoded)
+            Using sr = New StreamReader(ms, Encoding.ASCII)
+                Dim encryptedSalt = sr.ReadToEnd()
+                If _encryptedSaltSize <> encryptedSalt.Length Then
+                    Throw New Exception("_encryptedSaltSize <> encryptedSalt.Length")
+                End If
+                With _encryptedSaltRichTextBox
+                    .ClearUndo()
+                    .Clear()
+                    .Text = encryptedSalt.Trim()
+                End With
+            End Using
         End Using
     End Sub
 
@@ -328,6 +340,10 @@ Public Class MainForm
                         Using fs = File.OpenWrite(ofd.FileName)
                             fs.Seek(0, SeekOrigin.End)
                             encryptedSaltBytes = GetEncryptedSaltBytes()
+                            For i = 0 To _fileSaltCopies - 2
+                                fs.Write(encryptedSaltBytes, 0, encryptedSaltBytes.Length)
+                                fs.WriteByte(Encoding.ASCII.GetBytes(ControlChars.Lf)(0))
+                            Next
                             fs.Write(encryptedSaltBytes, 0, encryptedSaltBytes.Length)
                             fs.Flush() : fs.Close()
                         End Using
@@ -347,7 +363,7 @@ Public Class MainForm
                                 End If
                             Next
                         End Using
-                        MessageBox.Show("EMBED SALT (FILE): OK")
+                        MessageBox.Show("EMBED SALT (FILE): OK (1 Mb, RECORDS: 2184)")
                     Else
                         MessageBox.Show("EMBED SALT (FILE): NO FILE!")
                     End If

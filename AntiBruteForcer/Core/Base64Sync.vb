@@ -80,10 +80,10 @@ Public Module Base64Sync
         Dim syncBlockSize As Integer = _baseBlock64Size * messageWidth
         Dim header = GetHeader(title, syncBlockSize)
         Dim footer = GetFooter(title, syncBlockSize)
-        '---------------------------------------------
+
         Dim base64WithSync As String = Encoding.UTF8.GetString(base64).Replace("—", "-").Replace(_syncSymbol2, _syncSymbol).Replace("-", String.Empty).Replace(" ", String.Empty)
         base64WithSync = base64WithSync.Replace(header.Replace("-", String.Empty).Replace(" ", String.Empty), String.Empty).Replace(footer.Replace("-", String.Empty).Replace(" ", String.Empty), String.Empty)
-        '---------------------------------------------
+
         Dim base64ByLines() As String = base64WithSync.Split({_syncSymbol}, StringSplitOptions.RemoveEmptyEntries)
         Dim base64sb = New StringBuilder()
         For i = 0 To base64ByLines.Length - 1
