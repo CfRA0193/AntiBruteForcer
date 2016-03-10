@@ -6,6 +6,15 @@
 
 rem @rmdir /Q /S bin
 
+cd bin
+cd Release
+del /Q /S *.vshost.*
+cd ..
+cd Debug
+del /Q /S *.vshost.*
+cd ..
+cd ..
+
 @for /D %%i in (*) do @(
 	@cd %%i
 	@rmdir /Q /S bin

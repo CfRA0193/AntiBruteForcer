@@ -13,16 +13,20 @@ Public Class MainForm
     Private Const _rndPassLen = 8 '8
     Private Const _encryptedSaltSize = 479 '479
     Private Const _fileSaltCopies = 2184 '2184
-
-    Private _salt As New List(Of Byte)
-    Private _distrMap As Long()
-    Private _saltTitle As String = "AntiBruteForcer ENCRYPTED SALT"
-    Private _keyTitle As String = "AntiBruteForcer KEY"
+    Private Const _encryptedSaltMessage = "Encrypted 'salt message'..."
+    Private Const _saltTitle As String = "AntiBruteForcer ENCRYPTED SALT"
+    Private Const _keyTitle As String = "AntiBruteForcer KEY"
 
     Private _rdRand As Boolean = False
+    Private _distrMap As Long()
+    Private _salt As New List(Of Byte)
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = My.Application.Info.Title.ToString() + " [" + My.Application.Info.Version.ToString() + "]"
+        RDRandomGeneratorAvailableCheck()
+    End Sub
+
+    Private Sub RDRandomGeneratorAvailableCheck()
         Dim rdRandomGeneratorAvailable = False
         Try
             rdRandomGeneratorAvailable = RdRandom.GeneratorAvailable()
@@ -31,7 +35,7 @@ Public Class MainForm
         If rdRandomGeneratorAvailable Then
             _IntelInsidePictureBox.Visible = True : _rdRand = True
         Else
-            _IntelInsidePictureBox.Visible = False
+            _IntelInsidePictureBox.Visible = False : _rdRand = False
         End If
     End Sub
 
@@ -45,10 +49,12 @@ Public Class MainForm
     End Sub
 
     Private Sub UpdateEncryptedSalt(e As MouseEventArgs)
-        _encryptedSaltRichTextBox.Text = GetEncryptedSalt(e, _saltPasswordTextBox.Text)
-        Dim encryptedSaltBytes = GetEncryptedSaltBytes()
-        If _encryptedSaltSize <> encryptedSaltBytes.Length Then
-            Throw New Exception("_encryptedSaltSize <> encryptedSaltBytes.Length")
+        If _encryptedSaltRichTextBox.Text.Trim() <> _encryptedSaltMessage Then
+            _encryptedSaltRichTextBox.Text = GetEncryptedSalt(e, _saltPasswordTextBox.Text)
+            Dim encryptedSaltBytes = GetEncryptedSaltBytes()
+            If _encryptedSaltSize <> encryptedSaltBytes.Length Then
+                Throw New Exception("_encryptedSaltSize <> encryptedSaltBytes.Length")
+            End If
         End If
     End Sub
 
@@ -217,7 +223,7 @@ Public Class MainForm
             With _saltGenerationCheckBox
                 .Enabled = True
             End With
-            _IntelInsidePictureBox.Visible = True
+            RDRandomGeneratorAvailableCheck()
         End If
     End Sub
 
@@ -236,7 +242,15 @@ Public Class MainForm
 
     Private Sub _saltGenerationCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles _saltGenerationCheckBox.CheckedChanged
         If _saltGenerationCheckBox.Checked Then
-            _keyRichTextBox.Text = String.Empty
+            With _encryptedSaltRichTextBox
+                .ClearUndo()
+                .Clear()
+            End With
+
+            With _keyRichTextBox
+                .ClearUndo()
+                .Clear()
+            End With
 
             With _saltPasswordTextBox
                 .ClearUndo()
@@ -253,12 +267,10 @@ Public Class MainForm
     End Sub
 
     Private Sub _helpButton_Click(sender As Object, e As EventArgs) Handles _helpButton.Click
-        _saltGenerationCheckBox.Checked = False : Application.DoEvents()
-
+        _saltGenerationCheckBox.Checked = False
         With _encryptedSaltRichTextBox
             .ClearUndo()
-            .ClearUndo()
-            .Text = "Text box to store encrypted 'salt message', which must be saved in comments of archive or in txt-file... Don't encrypt filenames in archive, because without access to archive's comment you will not be able to decrypt it! Always check derived key (try to decrypt archive)!"
+            .Text = _encryptedSaltMessage
         End With
 
         With _saltPasswordTextBox
@@ -271,13 +283,13 @@ Public Class MainForm
         With _keyRichTextBox
             .ClearUndo()
             .Clear()
-            .Text = "Text box to store derived key, which will be used by you to encrypt archive..."
+            .Text = "Derived key (to encrypt archive)..."
         End With
 
         With _masterPasswordTextBox
             .ClearUndo()
             .Clear()
-            .Text = "MASTER PASSWORD (PRIVATE)..."
+            .Text = "MASTER PASSWORD (private)..."
             .PasswordChar = String.Empty
         End With
     End Sub
