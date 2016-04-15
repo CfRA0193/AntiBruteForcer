@@ -458,6 +458,10 @@ Public Class MainForm
         UpdateEncryptedSalt(sender, e)
     End Sub
 
+    Private Sub _fastCheckBox_MouseMove(sender As Object, e As MouseEventArgs) Handles _fastCheckBox.MouseMove
+        UpdateEncryptedSalt(sender, e)
+    End Sub
+
     Private Sub _deriveKeyButton_MouseMove(sender As Object, e As MouseEventArgs) Handles _deriveKeyButton.MouseMove
         UpdateEncryptedSalt(sender, e)
     End Sub

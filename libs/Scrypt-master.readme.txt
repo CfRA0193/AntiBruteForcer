@@ -1,4 +1,4 @@
-Before you will re-build Scrypt Library to use with AntiBruteForcer:
+Before you will re-build Scrypt Library to use it with AntiBruteForcer:
 
 ScryptEncoder.cs
 line 459:
